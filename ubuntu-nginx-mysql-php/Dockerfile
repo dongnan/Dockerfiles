@@ -46,4 +46,4 @@ EXPOSE 80
 # volume for mysql database and wordpress install
 VOLUME ["/var/lib/mysql", "/var/lib/www", "/etc/nginx"]
 
-CMD ["/bin/bash", "/start.sh"]
+CMD ["/bin/bash"]
