@@ -1,9 +1,9 @@
 FROM debian:jessie
 
+RUN apt-get update
+
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
-
-RUN apt-get update
 
 RUN apt-get install -y --no-install-recommends libevent-2.0-5
 
