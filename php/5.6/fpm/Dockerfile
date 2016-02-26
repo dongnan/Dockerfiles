@@ -11,12 +11,6 @@ RUN apt-get install -y autoconf file g++ gcc libc-dev make pkg-config re2c --no-
 # gd deps
 RUN apt-get install -y libgd-dev --no-install-recommends
 
-# gearman deps
-RUN apt-get install -y libgearman-dev --no-install-recommends
-
-# yar deps
-RUN apt-get install -y libcurl4-gnutls-dev --no-install-recommends
-
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN mkdir -p $PHP_INI_DIR/conf.d
 
@@ -33,13 +27,6 @@ RUN set -xe \
 ENV PHP_VERSION 5.6.18
 ENV PHP_FILENAME php-5.6.18.tar.xz
 ENV PHP_SHA256 54dd9106c3469bc7028644d72ac140af00655420bbaaf4a742a64e9ed02ec1b0
-
-ENV PHP_EXT_YAF yaf-2.3.5.tgz
-ENV PHP_EXT_REDIS redis-2.2.7.tgz
-ENV PHP_EXT_GEARMAN gearman-1.1.2.tgz
-ENV PHP_EXT_MSGPACK msgpack-0.5.7.tgz
-ENV PHP_EXT_YAR yar-1.2.5.tgz
-ENV PHP_EXT_SEASLOG SeasLog-1.5.0.tgz
 
 # --enable-mysqlnd is included below because it's harder to compile after the fact the extensions are (since it's a plugin for several extensions, not an extension in itself)
 RUN buildDeps=" \
@@ -84,6 +71,7 @@ RUN buildDeps=" \
 
 COPY docker-php-ext-* /usr/local/bin/
 
+ENV PHP_EXT_YAF yaf-2.3.5.tgz
 RUN set -x \
 	&& cd /usr/src \
         && curl -fSL "http://pecl.php.net/get/$PHP_EXT_YAF" -o "$PHP_EXT_YAF" \
@@ -92,6 +80,7 @@ RUN set -x \
         && rm -f $PHP_EXT_YAF \
 	&& docker-php-ext-install yaf
 
+ENV PHP_EXT_REDIS redis-2.2.7.tgz
 RUN set -x \
         && cd /usr/src \
         && curl -fSL "http://pecl.php.net/get/$PHP_EXT_REDIS" -o "$PHP_EXT_REDIS" \
@@ -100,6 +89,9 @@ RUN set -x \
         && rm -f $PHP_EXT_REDIS \
 	&& docker-php-ext-install redis
 
+# gearman deps
+RUN apt-get install -y libgearman-dev --no-install-recommends
+ENV PHP_EXT_GEARMAN gearman-1.1.2.tgz
 RUN set -x \
         && cd /usr/src \
         && curl -fSL "http://pecl.php.net/get/$PHP_EXT_GEARMAN" -o "$PHP_EXT_GEARMAN" \
@@ -108,6 +100,7 @@ RUN set -x \
         && rm -f $PHP_EXT_GEARMAN \
 	&& docker-php-ext-install gearman
 
+ENV PHP_EXT_MSGPACK msgpack-0.5.7.tgz
 RUN set -x \
         && cd /usr/src \
         && curl -fSL "http://pecl.php.net/get/$PHP_EXT_MSGPACK" -o "$PHP_EXT_MSGPACK" \
@@ -116,6 +109,9 @@ RUN set -x \
         && rm -f $PHP_EXT_MSGPACK \
 	&& docker-php-ext-install msgpack
 
+# yar deps
+RUN apt-get install -y libcurl4-gnutls-dev --no-install-recommends
+ENV PHP_EXT_YAR yar-1.2.5.tgz
 RUN set -x \
         && cd /usr/src \
         && curl -fSL "http://pecl.php.net/get/$PHP_EXT_YAR" -o "$PHP_EXT_YAR" \
@@ -124,6 +120,7 @@ RUN set -x \
         && rm -f $PHP_EXT_YAR \
 	&& docker-php-ext-install yar
 
+ENV PHP_EXT_SEASLOG SeasLog-1.5.0.tgz
 RUN set -x \
         && cd /usr/src \
         && curl -fSL "http://pecl.php.net/get/$PHP_EXT_SEASLOG" -o "$PHP_EXT_SEASLOG" \
@@ -131,6 +128,17 @@ RUN set -x \
         && tar -xf "$PHP_EXT_SEASLOG" -C /usr/src/php/ext/SeasLog --strip-components=1 \
         && rm -f $PHP_EXT_SEASLOG \
 	&& docker-php-ext-install SeasLog
+
+# memcached deps
+RUN apt-get install -y libmemcached-dev --no-install-recommends
+ENV PHP_EXT_MEMCACHED memcached-2.2.0.tgz
+RUN set -x \
+        && cd /usr/src \
+	&& curl -fSL "http://pecl.php.net/get/$PHP_EXT_MEMCACHED" -o "$PHP_EXT_MEMCACHED" \
+	&& mkdir -p /usr/src/php/ext/memcached \
+	&& tar -xf "$PHP_EXT_MEMCACHED" -C /usr/src/php/ext/memcached --strip-components=1 \
+	&& rm -f $PHP_EXT_MEMCACHED \
+	&& docker-php-ext-install memcached
 
 RUN set -x \
 	&& rm -rf /var/lib/apt/lists/* \
@@ -172,6 +180,8 @@ RUN set -ex \
 		echo '[www]'; \
 		echo 'listen = [::]:9000'; \
 	} | tee php-fpm.d/zz-docker.conf
+
+VOLUME ["/usr/local/etc"]
 
 EXPOSE 9000
 CMD ["php-fpm"]
