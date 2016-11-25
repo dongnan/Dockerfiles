@@ -23,8 +23,6 @@ RUN set -x \
     && gosu nobody true \
     && apt-get purge -y --auto-remove ca-certificates wget
 
-RUN mkdir /docker-entrypoint-initdb.d
-
 # install "pwgen" for randomizing passwords
 # install "apt-transport-https" for Percona's repo (switched to https-only)
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -77,7 +75,7 @@ ENV RESTY_OPENSSL_VERSION "1.0.2j"
 ENV RESTY_PCRE_VERSION "8.39"
 ENV RESTY_J "1"
 ENV RESTY_INSTALL_DIR /opt/app/openresty
-ENV RESTY_NGINX_DIR /opt/app/openresty/nginx
+ENV RESTY_NGINX_DIR /opt/app/nginx
 ENV NGINX_LOG_DIR /data/logs/nginx
 ENV RESTY_CONFIG_OPTIONS \
     --with-file-aio \
