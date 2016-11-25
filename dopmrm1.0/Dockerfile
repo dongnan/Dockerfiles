@@ -53,6 +53,8 @@ RUN mkdir /opt/down \
     && mkdir -p $OPENRESTY_NGINX_DIR/temp \
     && mkdir -p $OPENRESTY_NGINX_DIR/logs \
     && useradd web \
-    && rm /opt/down/*
+    && rm -rf /opt/down/*
+COPY nginx/nginx /etc/init.d/nginx
 
-# 安装
+# 安装Percona (mysql)
+
