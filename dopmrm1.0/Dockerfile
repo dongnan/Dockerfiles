@@ -3,7 +3,7 @@ FROM debian:jessie
 MAINTAINER Dong Nan <hidongnan@gmail.com>
 
 # 替换apt源
-COPY 163.sources.list /etc/apt/sources.list
+#COPY 163.sources.list /etc/apt/sources.list
 
 # 安装 mysql (percona-5.7)
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
@@ -12,7 +12,9 @@ RUN groupadd -r mysql && useradd -r -g mysql mysql
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
 RUN set -x \
-    && apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
+    && DEBIAN_FRONTEND=noninteractive apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ca-certificates wget \
+    && rm -rf /var/lib/apt/lists/* \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
     && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
     && export GNUPGHOME="$(mktemp -d)" \
@@ -21,11 +23,12 @@ RUN set -x \
     && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu \
     && gosu nobody true \
-    && apt-get purge -y --auto-remove ca-certificates wget
+    && DEBIAN_FRONTEND=noninteractive apt-get purge -y --auto-remove ca-certificates wget
 
 # install "pwgen" for randomizing passwords
 # install "apt-transport-https" for Percona's repo (switched to https-only)
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         apt-transport-https ca-certificates \
         pwgen \
     && rm -rf /var/lib/apt/lists/*
@@ -52,8 +55,8 @@ RUN { \
         echo percona-server-server-$PERCONA_MAJOR percona-server-server/root_password password 'unused'; \
         echo percona-server-server-$PERCONA_MAJOR percona-server-server/root_password_again password 'unused'; \
     } | debconf-set-selections \
-    && apt-get update \
-    && apt-get install -y \
+    && DEBIAN_FRONTEND=noninteractive apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         percona-server-server-$PERCONA_MAJOR=$PERCONA_VERSION \
     && rm -rf /var/lib/apt/lists/* \
     # purge and re-create /data/mysql with appropriate ownership
