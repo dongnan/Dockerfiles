@@ -57,7 +57,7 @@ RUN { \
     && apt-get install -y \
         percona-server-server-$PERCONA_MAJOR=$PERCONA_VERSION \
     && rm -rf /var/lib/apt/lists/* \
-# purge and re-create /data/mysql with appropriate ownership
+    # purge and re-create /data/mysql with appropriate ownership
     && rm -rf /data/mysql && mkdir -p /data/mysql \
     && chown -R mysql:mysql /data/mysql
 
