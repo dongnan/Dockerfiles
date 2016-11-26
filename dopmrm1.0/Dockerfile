@@ -183,7 +183,7 @@ RUN \
     && rm -rf luarocks-${RESTY_LUAROCKS_VERSION} luarocks-${RESTY_LUAROCKS_VERSION}.tar.gz \
     && DEBIAN_FRONTEND=noninteractive apt-get autoremove -y
 COPY nginx/nginx /etc/init.d/nginx
-RUN ln -sf $RESTY_NGINX_DIR/conf /etc/nginx
+RUN ln -sf $RESTY_NGINX_DIR/conf /etc/nginx && chmod +x /etc/init.d/nginx
 
 
 # 安装 Redis
@@ -194,8 +194,11 @@ RUN cd /tmp \
     && curl -fSL http://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz -o redis-${REDIS_VERSION}.tar.gz \
     && tar xzvf redis-${REDIS_VERSION}.tar.gz \
     && cd redis-${REDIS_VERSION} \
-    && make && make PREFIX=$REDIS_INSTALL_DIR install
-    rm -rf /tmp/redis*
+    && make && make PREFIX=$REDIS_INSTALL_DIR install \
+    && rm -rf /tmp/redis*
+COPY redis/redis /etc/init.d/redis
+COPY redis/redis.conf /etc/redis.conf
+RUN chmod +x /etc/init.d/redis
 
 
 # 安装 PHP

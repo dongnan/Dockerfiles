@@ -4,7 +4,7 @@
 EXEC=/opt/app/redis/bin/redis-server
 CLIEXEC=/opt/app/redis/bin/redis-cli
 PIDFILE=/var/run/redis.pid
-CONF="/etc/redis/redis.conf"
+CONF="/etc/redis.conf"
 REDISPORT="6379"
 ###############
 # SysV Init Information
