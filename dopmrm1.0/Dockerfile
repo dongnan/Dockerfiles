@@ -185,6 +185,67 @@ RUN \
 COPY nginx/nginx /etc/init.d/nginx
 RUN ln -sf $RESTY_NGINX_DIR/conf /etc/nginx
 
+
+# 安装 Redis
+ENV REDIS_VERSION 3.2.5
+ENV REDIS_INSTALL_DIR /opt/app/redis
+RUN cd /tmp \
+    && rm -rf redis* \
+    && curl -fSL http://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz -o redis-${REDIS_VERSION}.tar.gz \
+    && tar xzvf redis-${REDIS_VERSION}.tar.gz \
+    && cd redis-${REDIS_VERSION} \
+    && make && make PREFIX=$REDIS_INSTALL_DIR install
+    rm -rf /tmp/redis*
+
+
+# 安装 PHP
+ENV PHP_VERSION 5.6.28
+ENV PHP_INSTALL_DIR /opt/app/php
+# persistent / runtime deps
+ENV PHPIZE_DEPS \
+		autoconf \
+		file \
+		g++ \
+		gcc \
+		libc-dev \
+		make \
+		pkg-config \
+		re2c
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+		$PHPIZE_DEPS \
+                ca-certificates \
+		curl \
+		libedit2 \
+		libsqlite3-0 \
+		libxml2 \
+		xz-utils \
+                libgd3 libpcre3 libgearman7 libcurl3 libgd2-xpm-dev \
+                libreadline-dev libncurses5-dev libmemcached-dev libbz2-dev \
+                libpcre3-dev pkg-config openssl libcurl4-openssl-dev libssl-dev zlib1g-dev \
+                libxml2-dev libmcrypt-dev libicu-dev libfreetype6-dev \
+	--no-install-recommends && rm -r /var/lib/apt/lists/*
+
+RUN cd /tmp \
+    && curl -fSL http://jp2.php.net/get/php-${PHP_VERSION}.tar.xz/from/this/mirror -o php-${PHP_VERSION}.tar.xz \
+    && tar xf php-${PHP_VERSION}.tar.xz && cd php-${PHP_VERSION} \
+    && ./configure --prefix=$PHP_INSTALL_DIR \
+        --with-config-file-path=$PHP_INSTALL_DIR/etc \
+        --enable-pcntl --enable-fpm --enable-gd-native-ttf \
+        --with-freetype-dir --enable-bcmath --enable-sysvmsg \
+        --enable-sysvsem --enable-sysvshm --enable-soap \
+        --enable-opcache --enable-mysqlnd --enable-exif \
+        --enable-sockets --enable-mbstring --enable-zip \
+        --disable-ipv6 --disable-cgi --with-gd --with-jpeg-dir \
+        --with-openssl --with-png-dir --with-zlib --with-mhash \
+        --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+    && make -j "$(nproc)" && make install && rm -rf /tmp/php-${PHP_VERSION}*
+
+COPY php56/php-fpm-5.6 /etc/init.d/php-fpm
+COPY php56/php-fpm.conf /opt/app/php/etc/php-fpm.conf
+COPY php56/php.ini /opt/app/php/etc/php.ini
+RUN ln -sf $PHP_INSTALL_DIR/etc /etc/php && chmod +x /etc/init.d/php-fpm
+
+
 VOLUME ["/data"]
 
 COPY docker-entrypoint.sh /usr/local/bin/
