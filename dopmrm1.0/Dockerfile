@@ -3,7 +3,7 @@ FROM debian:jessie
 MAINTAINER Dong Nan <hidongnan@gmail.com>
 
 # 替换apt源
-#COPY 163.sources.list /etc/apt/sources.list
+COPY 163.sources.list /etc/apt/sources.list
 
 # 安装 mysql (percona-5.7)
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
