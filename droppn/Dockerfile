@@ -312,7 +312,7 @@ RUN \
     && make -j "$(nproc)" && make install \
     #&& DEBIAN_FRONTEND=noninteractive apt-get purge -y --auto-remove $PHPIZE_DEPS \
     #&& rm -rf /var/lib/apt/lists/* \
-    rm -rf /tmp/php-${PHP_VERSION}*
+    && rm -rf /tmp/php-${PHP_VERSION}*
 
 COPY php56/php-fpm /etc/init.d/php-fpm
 COPY php56/php-fpm.conf /etc/php/php-fpm.conf
