@@ -351,6 +351,8 @@ RUN \
 ENV PHP_EXT_MEMCACHED_VERSION=2.2.0 \
     PHP_EXT_MEMCACHED_URL=http://pecl.php.net/get/memcached-2.2.0.tgz
 RUN \
+    #DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libmemcached \
     cd /tmp \
     && rm -rf memcached-$PHP_EXT_MEMCACHED_VERSION* \
     && curl -fSL $PHP_EXT_MEMCACHED_URL -o memcached-${PHP_EXT_MEMCACHED_VERSION}.tgz \
