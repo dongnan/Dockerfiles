@@ -468,6 +468,12 @@ RUN \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs
 
 
+# 删除无用文件
+RUN \
+    rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
+
+
 VOLUME ["/data", "/etc"]
 
 COPY docker-entrypoint.sh /usr/local/bin/
