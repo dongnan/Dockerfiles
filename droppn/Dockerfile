@@ -324,7 +324,7 @@ ENV PHP_EXT_GEARMAN_VERSION=1.1.2 \
     PHP_EXT_GEARMAN_URL=https://pecl.php.net/get/gearman-1.1.2.tgz
 RUN \
     cd /tmp \
-    && rm -rf gearman-$PHP_EXT_GEARMAN_VERSION*
+    && rm -rf gearman-$PHP_EXT_GEARMAN_VERSION* \
     && curl -fSL $PHP_EXT_GEARMAN_URL -o gearman-${PHP_EXT_GEARMAN_VERSION}.tgz \
     && tar xzf gearman-${PHP_EXT_GEARMAN_VERSION}.tgz \
     && cd  gearman-${PHP_EXT_GEARMAN_VERSION} \
@@ -338,7 +338,7 @@ ENV PHP_EXT_MEMCACHE_VERSION=3.0.8 \
     PHP_EXT_MEMCACHE_URL=http://pecl.php.net/get/memcache-3.0.8.tgz
 RUN \
     cd /tmp \
-    && rm -rf memcache-$PHP_EXT_MEMCACHE_VERSION*
+    && rm -rf memcache-$PHP_EXT_MEMCACHE_VERSION* \
     && curl -fSL $PHP_EXT_MEMCACHE_URL -o memcache-${PHP_EXT_MEMCACHE_VERSION}.tgz \
     && tar xzf memcache-${PHP_EXT_MEMCACHE_VERSION}.tgz \
     && cd  memcache-${PHP_EXT_MEMCACHE_VERSION} \
@@ -353,7 +353,7 @@ ENV PHP_EXT_MEMCACHED_VERSION=2.2.0 \
     PHP_EXT_MEMCACHED_URL=http://pecl.php.net/get/memcached-2.2.0.tgz
 RUN \
     cd /tmp \
-    && rm -rf memcached-$PHP_EXT_MEMCACHED_VERSION*
+    && rm -rf memcached-$PHP_EXT_MEMCACHED_VERSION* \
     && curl -fSL $PHP_EXT_MEMCACHED_URL -o memcached-${PHP_EXT_MEMCACHED_VERSION}.tgz \
     && tar xzf memcached-${PHP_EXT_MEMCACHED_VERSION}.tgz \
     && cd  memcached-${PHP_EXT_MEMCACHED_VERSION} \
@@ -368,7 +368,7 @@ ENV PHP_EXT_MSGPACK_VERSION=0.5.7 \
     PHP_EXT_MSGPACK_URL=https://pecl.php.net/get/msgpack-0.5.7.tgz
 RUN \
     cd /tmp \
-    && rm -rf msgpack-$PHP_EXT_MSGPACK_VERSION*
+    && rm -rf msgpack-$PHP_EXT_MSGPACK_VERSION* \
     && curl -fSL $PHP_EXT_MSGPACK_URL -o msgpack-${PHP_EXT_MSGPACK_VERSION}.tgz \
     && tar xzf msgpack-${PHP_EXT_MSGPACK_VERSION}.tgz \
     && cd  msgpack-${PHP_EXT_MSGPACK_VERSION} \
@@ -382,7 +382,7 @@ ENV PHP_EXT_YAR_VERSION=1.2.5 \
     PHP_EXT_YAR_URL=https://pecl.php.net/get/yar-1.2.5.tgz
 RUN \
     cd /tmp \
-    && rm -rf yar-$PHP_EXT_YAR_VERSION*
+    && rm -rf yar-$PHP_EXT_YAR_VERSION* \
     && curl -fSL $PHP_EXT_YAR_URL -o yar-${PHP_EXT_YAR_VERSION}.tgz \
     && tar xzf yar-${PHP_EXT_YAR_VERSION}.tgz \
     && cd  yar-${PHP_EXT_YAR_VERSION} \
@@ -396,7 +396,7 @@ ENV PHP_EXT_REDIS_VERSION=2.2.8 \
     PHP_EXT_REDIS_URL=https://pecl.php.net/get/redis-2.2.8.tgz
 RUN \
     cd /tmp \
-    && rm -rf redis-$PHP_EXT_REDIS_VERSION*
+    && rm -rf redis-$PHP_EXT_REDIS_VERSION* \
     && curl -fSL $PHP_EXT_REDIS_URL -o redis-${PHP_EXT_REDIS_VERSION}.tgz \
     && tar xzf redis-${PHP_EXT_REDIS_VERSION}.tgz \
     && cd  redis-${PHP_EXT_REDIS_VERSION} \
@@ -410,7 +410,7 @@ ENV PHP_EXT_SEASLOG_VERSION=1.6.8 \
     PHP_EXT_SEASLOG_URL=https://pecl.php.net/get/SeasLog-1.6.8.tgz
 RUN \
     cd /tmp \
-    && rm -rf SeasLog-$PHP_EXT_SEASLOG_VERSION*
+    && rm -rf SeasLog-$PHP_EXT_SEASLOG_VERSION* \
     && curl -fSL $PHP_EXT_SEASLOG_URL -o SeasLog-${PHP_EXT_SEASLOG_VERSION}.tgz \
     && tar xzf SeasLog-${PHP_EXT_SEASLOG_VERSION}.tgz \
     && cd  SeasLog-${PHP_EXT_SEASLOG_VERSION} \
@@ -424,7 +424,7 @@ ENV PHP_EXT_SWOOLE_VERSION=1.9.0 \
     PHP_EXT_SWOOLE_URL=https://pecl.php.net/get/swoole-1.9.0.tgz
 RUN \
     cd /tmp \
-    && rm -rf swoole-$PHP_EXT_SWOOLE_VERSION*
+    && rm -rf swoole-$PHP_EXT_SWOOLE_VERSION* \
     && curl -fSL $PHP_EXT_SWOOLE_URL -o swoole-${PHP_EXT_SWOOLE_VERSION}.tgz \
     && tar xzf swoole-${PHP_EXT_SWOOLE_VERSION}.tgz \
     && cd  swoole-${PHP_EXT_SWOOLE_VERSION} \
@@ -438,7 +438,7 @@ ENV PHP_EXT_YAC_VERSION=0.9.2 \
     PHP_EXT_YAC_URL=https://pecl.php.net/get/yac-0.9.2.tgz
 RUN \
     cd /tmp \
-    && rm -rf yac-$PHP_EXT_YAC_VERSION*
+    && rm -rf yac-$PHP_EXT_YAC_VERSION* \
     && curl -fSL $PHP_EXT_YAC_URL -o yac-${PHP_EXT_YAC_VERSION}.tgz \
     && tar xzf yac-${PHP_EXT_YAC_VERSION}.tgz \
     && cd  yac-${PHP_EXT_YAC_VERSION} \
@@ -452,7 +452,7 @@ ENV PHP_EXT_YAF_VERSION=2.3.5 \
     PHP_EXT_YAF_URL=https://pecl.php.net/get/yaf-2.3.5.tgz
 RUN \
     cd /tmp \
-    && rm -rf yaf-$PHP_EXT_YAF_VERSION*
+    && rm -rf yaf-$PHP_EXT_YAF_VERSION* \
     && curl -fSL $PHP_EXT_YAF_URL -o yaf-${PHP_EXT_YAF_VERSION}.tgz \
     && tar xzf yaf-${PHP_EXT_YAF_VERSION}.tgz \
     && cd  yaf-${PHP_EXT_YAF_VERSION} \
