@@ -342,7 +342,6 @@ RUN \
     && curl -fSL $PHP_EXT_MEMCACHE_URL -o memcache-${PHP_EXT_MEMCACHE_VERSION}.tgz \
     && tar xzf memcache-${PHP_EXT_MEMCACHE_VERSION}.tgz \
     && cd  memcache-${PHP_EXT_MEMCACHE_VERSION} \
-    && make clean \
     && /opt/app/php/bin/phpize \
     && ./configure --with-php-config=/opt/app/php/bin/php-config \
     && make && make install \
@@ -357,7 +356,6 @@ RUN \
     && curl -fSL $PHP_EXT_MEMCACHED_URL -o memcached-${PHP_EXT_MEMCACHED_VERSION}.tgz \
     && tar xzf memcached-${PHP_EXT_MEMCACHED_VERSION}.tgz \
     && cd  memcached-${PHP_EXT_MEMCACHED_VERSION} \
-    && make clean \
     && /opt/app/php/bin/phpize \
     && ./configure --with-php-config=/opt/app/php/bin/php-config \
     && make && make install \
