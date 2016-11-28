@@ -473,7 +473,8 @@ RUN \
 # 安装 supervisord
 RUN \
     #DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends supervisor
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends supervisor \
+    && mkdir -p /data/logs/supervisor
 
 # 复制supervisor配置文件
 COPY supervisor /etc/supervisor
