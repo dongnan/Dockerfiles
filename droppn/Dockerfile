@@ -350,10 +350,12 @@ RUN \
 # 安装 PHP memcached 扩展
 ENV PHP_EXT_MEMCACHED_VERSION=2.2.0 \
     PHP_EXT_MEMCACHED_URL=http://pecl.php.net/get/memcached-2.2.0.tgz
+# 
+#COPY ustc.sources.list /etc/apt/sources.list
 RUN \
     #DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libmemcached-dev \
-    cd /tmp \
+    && cd /tmp \
     && rm -rf memcached-$PHP_EXT_MEMCACHED_VERSION* \
     && curl -fSL $PHP_EXT_MEMCACHED_URL -o memcached-${PHP_EXT_MEMCACHED_VERSION}.tgz \
     && tar xzf memcached-${PHP_EXT_MEMCACHED_VERSION}.tgz \
@@ -464,8 +466,8 @@ RUN \
 
 # 安装 nodejs
 RUN \
-    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs
 
 
 # 删除无用文件
