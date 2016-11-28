@@ -487,7 +487,9 @@ RUN \
 
 # 日志目录及权限
 RUN \
-    mkdir -p /data/logs/redis \
+    mkdir -p /data/redis \
+    && mkdir -p /data/logs/redis \
+    && chown redis:redis -R /data/redis \
     && chown redis:redis -R /data/logs/redis \
     && groupadd -r php && useradd -r -g php php \
     && mkdir -p /data/logs/php \
