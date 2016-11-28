@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
-
+# 初始化mysql
 DATADIR=/data/mysql
 INSTALL_LOCK=$DATADIR/install.lock
+# mysql默认密码:123456
 MYSQL_ROOT_PASSWORD=123456
 
 if [ ! -f "$INSTALL_LOCK" ]; then
@@ -41,4 +42,4 @@ if [ ! -f "$INSTALL_LOCK" ]; then
     echo
 fi
 
-exec "$@"
+#exec "$@"

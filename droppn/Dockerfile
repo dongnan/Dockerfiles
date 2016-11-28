@@ -491,8 +491,12 @@ RUN \
     rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 
-# 日志目录及权限
-#RUN \
+# 初始化数据库
+COPY mysql/mysql_init.sh /mysql_init.sh
+RUN /
+    chmod +x /mysql_init.sh &&
+    bash /mysql_init.sh
+
 
 VOLUME ["/data", "/etc"]
 
