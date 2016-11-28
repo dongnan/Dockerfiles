@@ -189,6 +189,7 @@ RUN \
     && rm -rf luarocks-${RESTY_LUAROCKS_VERSION} luarocks-${RESTY_LUAROCKS_VERSION}.tar.gz
 #
 COPY nginx/nginx /etc/init.d/nginx
+COPY nginx/upstream.conf /etc/nginx/upstream.conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 RUN chmod +x /etc/init.d/nginx && ln -sf /etc/nginx $RESTY_NGINX_DIR/conf
 
@@ -469,6 +470,13 @@ RUN \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs
 
+# 安装 supervisord
+RUN \
+    #DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends supervisor
+
+# 复制supervisor配置文件
+COPY supervisor /etc/supervisor
 
 # 删除无用文件
 RUN \

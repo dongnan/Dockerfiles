@@ -4,6 +4,7 @@ set -e
 # 初始化mysql
 DATADIR=/data/mysql
 INSTALL_LOCK=$DATADIR/install.lock
+# mysql默认密码:123456
 MYSQL_ROOT_PASSWORD=123456
 
 if [ ! -f "$INSTALL_LOCK" ]; then
@@ -42,6 +43,7 @@ if [ ! -f "$INSTALL_LOCK" ]; then
     echo
 fi
 
-#/opt/app/gearmand/sbin/gearmand -L 127.0.0.1 -p 4730 -u root -d
+#启动 supervisor
+supervisorctl -c /etc/supervisor/supervisord.conf
 
 exec "$@"
