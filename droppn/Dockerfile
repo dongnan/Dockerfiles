@@ -219,7 +219,10 @@ RUN \
     #&& DEBIAN_FRONTEND=noninteractive apt-get purge -y --auto-remove $REDIS_DEPS \
     #&& rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/redis* \
-    && mkdir -p /data/logs/redis
+    && mkdir -p /data/redis \
+    && chown redis:redis -R /data/redis \
+    && mkdir -p /data/logs/redis \
+    && chown redis:redis -R /data/logs/redis
 #
 COPY redis/redis /etc/init.d/redis
 COPY redis/redis.conf /etc/redis.conf
@@ -313,7 +316,10 @@ RUN \
     && make -j "$(nproc)" && make install \
     #&& DEBIAN_FRONTEND=noninteractive apt-get purge -y --auto-remove $PHPIZE_DEPS \
     #&& rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/php-${PHP_VERSION}*
+    && rm -rf /tmp/php-${PHP_VERSION}* \
+    && groupadd -r php && useradd -r -g php php \
+    && mkdir -p /data/logs/php \
+    && chown php:php -R /data/logs/php
 
 COPY php56/php-fpm /etc/init.d/php-fpm
 COPY php56/php-fpm.conf /etc/php/php-fpm.conf
@@ -486,14 +492,7 @@ RUN \
     && rm -rf /tmp/*
 
 # 日志目录及权限
-RUN \
-    mkdir -p /data/redis \
-    && mkdir -p /data/logs/redis \
-    && chown redis:redis -R /data/redis \
-    && chown redis:redis -R /data/logs/redis \
-    && groupadd -r php && useradd -r -g php php \
-    && mkdir -p /data/logs/php \
-    && chown php:php -R /data/logs/php
+#RUN \
 
 VOLUME ["/data", "/etc"]
 
