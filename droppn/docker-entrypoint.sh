@@ -44,6 +44,6 @@ if [ ! -f "$INSTALL_LOCK" ]; then
 fi
 
 #启动 supervisor
-supervisorctl -c /etc/supervisor/supervisord.conf
+supervisord -c /etc/supervisor/supervisord.conf
 
 exec "$@"
