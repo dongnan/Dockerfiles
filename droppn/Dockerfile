@@ -484,6 +484,12 @@ RUN \
     rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 
+# 日志目录及权限
+RUN \
+    mkdir -p /data/logs/redis \
+    && chown redis:redis -R /data/logs/redis \
+    && mkdir -p /data/logs/php \
+    && chown php:php -R /data/logs/php
 
 VOLUME ["/data", "/etc"]
 
