@@ -489,6 +489,7 @@ RUN \
 RUN \
     mkdir -p /data/logs/redis \
     && chown redis:redis -R /data/logs/redis \
+    && groupadd -r php && useradd -r -g php php \
     && mkdir -p /data/logs/php \
     && chown php:php -R /data/logs/php
 
