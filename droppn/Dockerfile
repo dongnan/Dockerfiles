@@ -494,7 +494,7 @@ RUN \
 # 初始化数据库
 COPY mysql/mysql_init.sh /mysql_init.sh
 RUN /
-    chmod +x /mysql_init.sh &&
+    chmod +x /mysql_init.sh && \
     bash /mysql_init.sh
 
 
