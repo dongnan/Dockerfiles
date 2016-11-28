@@ -478,6 +478,7 @@ RUN \
 
 # 复制supervisor配置文件
 COPY supervisor /etc/supervisor
+COPY supervisor/supervisor /etc/init.d/supervisor
 
 # 删除无用文件
 RUN \
