@@ -491,19 +491,19 @@ RUN \
     rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 
-# 初始化数据库
-COPY mysql/mysql_init.sh /mysql_init.sh
-RUN /
-    chmod +x /mysql_init.sh && \
-    bash /mysql_init.sh
-
-
-VOLUME ["/data", "/etc"]
-
+# docker-entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN ln -s /usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
+VOLUME ["/data", "/etc"]
 EXPOSE 80
+
+# 初始化数据库
+COPY mysql/mysql_init.sh /tmp/mysql_init.sh
+RUN \
+    chmod +x /tmp/mysql_init.sh \
+    && bash /tmp/mysql_init.sh && rm -rf /tmp/mysql_init.sh
+
 CMD ["/bin/bash"]
