@@ -506,4 +506,6 @@ RUN \
     chmod +x /tmp/mysql_init.sh \
     && bash /tmp/mysql_init.sh && rm -rf /tmp/mysql_init.sh
 
+COPY rc.local /etc/rc.local
+RUN chmod +x /etc/rc.local
 CMD ["/bin/bash"]
