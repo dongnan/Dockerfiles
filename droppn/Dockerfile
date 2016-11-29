@@ -486,10 +486,12 @@ RUN \
 COPY supervisor /etc/supervisor
 COPY supervisor/supervisor /etc/init.d/supervisor
 
-# 删除无用文件
+# 删除无用文件,创建目录
 RUN \
     rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/*
+    && rm -rf /tmp/* \
+    && mkdir /data/webroot \
+    && chown web:web /data/webroot
 
 # docker-entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
@@ -497,7 +499,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN ln -s /usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-VOLUME ["/data", "/etc"]
+VOLUME ["/data/webroot", "/etc/nginx/servers"]
 EXPOSE 80
 
 # 初始化数据库
@@ -506,6 +508,6 @@ RUN \
     chmod +x /tmp/mysql_init.sh \
     && bash /tmp/mysql_init.sh && rm -rf /tmp/mysql_init.sh
 
-COPY rc.local /etc/rc.local
-RUN chmod +x /etc/rc.local
+#COPY rc.local /etc/rc.local
+#RUN chmod +x /etc/rc.local
 CMD ["/bin/bash"]
