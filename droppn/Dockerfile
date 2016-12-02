@@ -493,12 +493,6 @@ RUN \
     && mkdir /data/webroot \
     && chown web:web /data/webroot
 
-# docker-entrypoint
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-RUN ln -s /usr/local/bin/docker-entrypoint.sh / # backwards compat
-ENTRYPOINT ["docker-entrypoint.sh"]
-
 VOLUME ["/data/webroot", "/etc/nginx/servers"]
 EXPOSE 80
 
@@ -510,4 +504,4 @@ RUN \
 
 COPY .bashrc /root/.bashrc
 
-CMD ["/bin/bash"]
+CMD ["supervisord","-c","/etc/supervisor/supervisord.conf","-n"]
