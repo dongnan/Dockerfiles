@@ -508,4 +508,6 @@ RUN \
     chmod +x /tmp/mysql_init.sh \
     && bash /tmp/mysql_init.sh && rm -rf /tmp/mysql_init.sh
 
+COPY .bashrc /root/.bashrc
+
 CMD ["/bin/bash"]
