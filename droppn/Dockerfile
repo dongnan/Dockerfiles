@@ -493,7 +493,8 @@ RUN \
     && mkdir /data/webroot \
     && chown web:web /data/webroot
 
-VOLUME ["/data/webroot", "/etc/nginx/servers"]
+#此处不使用volume,由使用此镜像的其他Dockerfile设置
+#VOLUME ["/data/webroot", "/etc/nginx/servers"]
 EXPOSE 80
 
 # 初始化数据库
