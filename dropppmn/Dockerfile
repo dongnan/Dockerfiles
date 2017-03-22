@@ -411,14 +411,14 @@ RUN \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_GEARMAN}.tgz -o ${PHP_EXT_GEARMAN}.tgz \
     # 安装PHP5.6扩展
     && tar xzf ${PHP_EXT_GEARMAN}.tgz \
-    && cd  ${PHP_EXT_GEARMAN} \
+    && cd ${PHP_EXT_GEARMAN} \
     && ${PHP56_INSTALL_DIR}/bin/phpize \
     && ./configure --with-gearman=/opt/app/gearmand --with-php-config=${PHP56_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_GEARMAN} \
     # 安装PHP5.5扩展
     && tar xzf ${PHP_EXT_GEARMAN}.tgz \
-    && cd  ${PHP_EXT_GEARMAN} \
+    && cd ${PHP_EXT_GEARMAN} \
     && ${PHP55_INSTALL_DIR}/bin/phpize \
     && ./configure --with-gearman=/opt/app/gearmand --with-php-config=${PHP55_INSTALL_DIR}/bin/php-config \
     && make && make install \
@@ -477,21 +477,21 @@ RUN \
     && ${PHP56_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP56_INSTALL_DIR}/bin/php-config \
     && make && make install \
-    && rm -rf ${PHP_EXT_MEMCACHED}
+    && rm -rf ${PHP_EXT_MEMCACHED} \
     # 安装PHP5.5扩展
     && tar xzf ${PHP_EXT_MEMCACHED}.tgz \
     && cd ${PHP_EXT_MEMCACHED} \
     && ${PHP55_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP55_INSTALL_DIR}/bin/php-config \
     && make && make install \
-    && rm -rf ${PHP_EXT_MEMCACHED}
+    && rm -rf ${PHP_EXT_MEMCACHED} \
     # 安装PHP5.3扩展
     && tar xzf ${PHP_EXT_MEMCACHED}.tgz \
     && cd ${PHP_EXT_MEMCACHED} \
     && ${PHP53_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
     && make && make install \
-    && rm -rf ${PHP_EXT_MEMCACHED}
+    && rm -rf ${PHP_EXT_MEMCACHED} \
     # 删除临时文件
     && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_MEMCACHED}*
 
