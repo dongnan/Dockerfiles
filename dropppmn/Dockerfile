@@ -618,7 +618,7 @@ RUN \
     && rm -rf /tmp/${PHP_EXT_SEASLOG}*
 
 # 安装 PHP swoole 扩展
-ENV PHP_EXT_SWOOLE=1.9.6
+ENV PHP_EXT_SWOOLE=swoole-1.9.6
 RUN \
     cd /tmp \
     && rm -rf ${PHP_EXT_SWOOLE}* \
