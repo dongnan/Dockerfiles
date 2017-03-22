@@ -378,6 +378,8 @@ ENV PHP53_VERSION=5.3.29 \
 RUN \
     #DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
+    && mkdir /usr/include/freetype2/freetype \
+    && ln -s /usr/include/freetype2/freetype.h /usr/include/freetype2/freetype/freetype.h \
     && cd /tmp \
     && curl -fSL http://jp2.php.net/get/php-${PHP53_VERSION}.tar.xz/from/this/mirror -o php-${PHP53_VERSION}.tar.xz \
     && tar xf php-${PHP53_VERSION}.tar.xz && cd php-${PHP53_VERSION} \
