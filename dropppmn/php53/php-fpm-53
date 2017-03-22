@@ -1,18 +1,18 @@
 #! /bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          php-fpm
+# Provides:          php-fpm-53
 # Required-Start:    $remote_fs $network
 # Required-Stop:     $remote_fs $network
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: starts php-fpm
+# Short-Description: starts php-fpm-53
 # Description:       starts the PHP FastCGI Process Manager daemon
 ### END INIT INFO
 
-php_fpm_BIN=/opt/app/php/sbin/php-fpm
-php_fpm_CONF=/etc/php/php-fpm.conf
-php_fpm_PID=/var/run/php-fpm.pid
+php_fpm_BIN=/opt/app/php53/sbin/php-fpm
+php_fpm_CONF=/etc/php53/php-fpm.conf
+php_fpm_PID=/var/run/php-fpm-53.pid
 
 php_opts="--fpm-config $php_fpm_CONF"
 
