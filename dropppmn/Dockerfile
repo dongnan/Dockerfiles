@@ -189,10 +189,49 @@ RUN \
     && rm -rf luarocks-${RESTY_LUAROCKS_VERSION} luarocks-${RESTY_LUAROCKS_VERSION}.tar.gz
 #
 COPY nginx/nginx /etc/init.d/nginx
-COPY nginx/upstream.conf /etc/nginx/upstream.conf
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-RUN chmod +x /etc/init.d/nginx && ln -sf /etc/nginx $RESTY_NGINX_DIR/conf
+COPY nginx/upstream.conf ${NGINX_CONF_DIR}/upstream.conf
+COPY nginx/nginx.conf ${NGINX_CONF_DIR}/nginx.conf
+RUN chmod +x /etc/init.d/nginx && ln -sf ${NGINX_CONF_DIR} $RESTY_NGINX_DIR/conf
 
+# 安装memcached
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r memcache && useradd -r -g memcache memcache
+
+ENV MEMCACHED_VERSION=1.4.36 \
+    MEMCACHED_SHA1=519b417515206b0b95ff9bf14106a891f6a2252e \
+    MEMCACHED_INSTALL_DIR=/opt/app/memcached \
+    MEMCACHED_BUILD_DEPS= \
+                ca-certificates \
+		dpkg-dev \
+		gcc \
+		libc6-dev \
+		libevent-dev \
+		libsasl2-dev \
+		make \
+		perl \
+		wget
+
+RUN #DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y ${MEMCACHED_BUILD_DEPS} --no-install-recommends \
+    && cd /tmp \
+    && rm -rf memcached* \
+    && curl -fSL "https://memcached.org/files/memcached-${MEMCACHED_VERSION}.tar.gz" -o memcached.tar.gz \
+    && echo "$MEMCACHED_SHA1  memcached.tar.gz" | sha1sum -c - \
+    && mkdir -p /tmp/memcached \
+    && tar -xzf memcached.tar.gz -C /tmp/memcached --strip-components=1 \
+    && rm memcached.tar.gz \
+    && cd /tmp/memcached \
+    && ./configure \
+            --prefix=${MEMCACHED_INSTALL_DIR}
+            --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
+            --enable-sasl \
+    && make -j "$(nproc)" \
+    && make install \
+    && rm -rf /tmp/memcached \
+    && apt-mark manual \
+            libevent-2.0-5 \
+            libsasl2-2 \
+    && memcached -V
 
 # 安装 Redis
 ENV REDIS_VERSION=3.2.8 \
@@ -755,7 +794,7 @@ RUN \
     && mkdir /data/webroot \
     && chown web:web /data/webroot
 
-VOLUME ["/data/webroot", "/etc/nginx/servers"]
+VOLUME ["/data/webroot", "${NGINX_CONF_DIR}/servers"]
 EXPOSE 80
 
 # 初始化数据库
