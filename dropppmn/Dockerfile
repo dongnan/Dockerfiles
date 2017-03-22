@@ -707,6 +707,18 @@ RUN \
     # 删除临时文件
     && rm -rf /tmp/${PHP_EXT_YAF}*
 
+# 安装 PHP zendopcache 扩展,只有PHP5.3才需要手动安装
+ENV PHP_EXT_ZENDOPCACHE=zendopcache-7.0.5
+RUN \
+    cd /tmp \
+    && rm -rf ${PHP_EXT_ZENDOPCACHE}* \
+    && curl -fSL https://pecl.php.net/get/${PHP_EXT_ZENDOPCACHE}.tgz -o ${PHP_EXT_ZENDOPCACHE}.tgz \
+    && tar xzf ${PHP_EXT_ZENDOPCACHE}.tgz \
+    && cd  ${PHP_EXT_ZENDOPCACHE} \
+    && ${PHP53_INSTALL_DIR}/bin/phpize \
+    && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf /tmp/${PHP_EXT_ZENDOPCACHE}*
 
 # 安装 nodejs
 RUN \
