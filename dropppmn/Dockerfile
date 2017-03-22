@@ -617,6 +617,17 @@ RUN \
     # 删除临时文件
     && rm -rf /tmp/${PHP_EXT_SEASLOG}*
 
+# 安装 hiredis,swoole --enable-async-redis 依赖
+ENV HIREDIS_VERSION=0.13.3
+ENV HIREDIS_SRC_DIR=hiredis
+RUN \
+    cd /tmp \
+    && rm -rf ${HIREDIS_SRC_DIR}* \
+    && curl -fSL https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz -o ${HIREDIS_SRC_DIR}-${HIREDIS_VERSION}.tar.gz \
+    && tar xzf ${HIREDIS_SRC_DIR}-${HIREDIS_VERSION}.tar.gz \
+    && cd ${HIREDIS_SRC_DIR}-${HIREDIS_VERSION} \
+    && make -j && make install && ldconfig
+
 # 安装 PHP swoole 扩展
 ENV PHP_EXT_SWOOLE=swoole-1.9.6
 RUN \
