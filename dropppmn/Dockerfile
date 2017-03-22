@@ -629,7 +629,7 @@ RUN \
     && make -j && make install && ldconfig
 
 # 安装 PHP swoole 扩展
-ENV PHP_EXT_SWOOLE=swoole-1.9.6
+ENV PHP_EXT_SWOOLE=swoole-1.9.8
 RUN \
     cd /tmp \
     && rm -rf ${PHP_EXT_SWOOLE}* \
