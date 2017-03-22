@@ -199,17 +199,17 @@ RUN groupadd -r memcache && useradd -r -g memcache memcache
 
 ENV MEMCACHED_VERSION=1.4.36 \
     MEMCACHED_SHA1=519b417515206b0b95ff9bf14106a891f6a2252e \
-    MEMCACHED_INSTALL_DIR=/opt/app/memcached \
-    MEMCACHED_BUILD_DEPS= \
+    MEMCACHED_INSTALL_DIR=/opt/app/memcached
+ENV MEMCACHED_BUILD_DEPS \
                 ca-certificates \
+                curl \
 		dpkg-dev \
 		gcc \
 		libc6-dev \
 		libevent-dev \
 		libsasl2-dev \
 		make \
-		perl \
-		wget
+		perl
 
 RUN #DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y ${MEMCACHED_BUILD_DEPS} --no-install-recommends \
@@ -222,7 +222,7 @@ RUN #DEBIAN_FRONTEND=noninteractive apt-get update && \
     && rm memcached.tar.gz \
     && cd /tmp/memcached \
     && ./configure \
-            --prefix=${MEMCACHED_INSTALL_DIR}
+            --prefix=${MEMCACHED_INSTALL_DIR} \
             --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
             --enable-sasl \
     && make -j "$(nproc)" \
