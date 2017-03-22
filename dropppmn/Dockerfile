@@ -666,21 +666,21 @@ RUN \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_YAC}.tgz -o ${PHP_EXT_YAC}.tgz \
     # 安装PHP5.6扩展
     && cd /tmp && tar xzf ${PHP_EXT_YAC}.tgz \
-    && cd  ${PHP_EXT_YAC} \
+    && cd ${PHP_EXT_YAC} \
     && ${PHP56_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP56_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_YAC} \
     # 安装PHP5.5扩展
     && cd /tmp && tar xzf ${PHP_EXT_YAC}.tgz \
-    && cd  ${PHP_EXT_YAC} \
+    && cd ${PHP_EXT_YAC} \
     && ${PHP55_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP55_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_YAC} \
     # 安装PHP5.3扩展
     && cd /tmp && tar xzf ${PHP_EXT_YAC}.tgz \
-    && cd  ${PHP_EXT_YAC} \
+    && cd ${PHP_EXT_YAC} \
     && ${PHP53_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
     && make && make install \
@@ -696,21 +696,21 @@ RUN \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_YAF}.tgz -o ${PHP_EXT_YAF}.tgz \
     # 安装PHP5.6扩展
     && cd /tmp && tar xzf ${PHP_EXT_YAF}.tgz \
-    && cd  ${PHP_EXT_YAF} \
+    && cd ${PHP_EXT_YAF} \
     && ${PHP56_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP56_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_YAF} \
     # 安装PHP5.5扩展
     && cd /tmp && tar xzf ${PHP_EXT_YAF}.tgz \
-    && cd  ${PHP_EXT_YAF} \
+    && cd ${PHP_EXT_YAF} \
     && ${PHP55_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP55_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_YAF} \
     # 安装PHP5.3扩展
     && cd /tmp && tar xzf ${PHP_EXT_YAF}.tgz \
-    && cd  ${PHP_EXT_YAF} \
+    && cd ${PHP_EXT_YAF} \
     && ${PHP53_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
     && make && make install \
@@ -725,7 +725,7 @@ RUN \
     && rm -rf ${PHP_EXT_ZENDOPCACHE}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_ZENDOPCACHE}.tgz -o ${PHP_EXT_ZENDOPCACHE}.tgz \
     && tar xzf ${PHP_EXT_ZENDOPCACHE}.tgz \
-    && cd  ${PHP_EXT_ZENDOPCACHE} \
+    && cd ${PHP_EXT_ZENDOPCACHE} \
     && ${PHP53_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
     && make && make install \
