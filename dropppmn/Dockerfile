@@ -306,7 +306,7 @@ ENV PHP56_VERSION=5.6.28 \
 RUN \
     #DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd ${DOWNLOAD_DIR} \
+    && cd /tmp \
     && curl -fSL http://jp2.php.net/get/php-${PHP56_VERSION}.tar.xz/from/this/mirror -o php-${PHP56_VERSION}.tar.xz \
     && tar xf php-${PHP56_VERSION}.tar.xz && cd php-${PHP56_VERSION} \
     && ./configure --prefix=${PHP56_INSTALL_DIR} \
@@ -320,7 +320,7 @@ RUN \
         --with-openssl --with-png-dir --with-zlib --with-mhash \
         --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
     && make -j "$(nproc)" && make install \
-    && rm -rf ${DOWNLOAD_DIR}/php-${PHP56_VERSION}* \
+    && rm -rf /tmp/php-${PHP56_VERSION}* \
     && mkdir -p ${PHP56_LOG_DIR} \
     && chown php:php -R ${PHP56_LOG_DIR} \
     && mkdir -p ${PHP56_CONF_DIR} \
@@ -342,7 +342,7 @@ ENV PHP55_VERSION=5.5.38 \
 RUN \
     #DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd ${DOWNLOAD_DIR} \
+    && cd /tmp \
     && curl -fSL http://jp2.php.net/get/php-${PHP55_VERSION}.tar.xz/from/this/mirror -o php-${PHP55_VERSION}.tar.xz \
     && tar xf php-${PHP55_VERSION}.tar.xz && cd php-${PHP55_VERSION} \
     && ./configure --prefix=${PHP55_INSTALL_DIR} \
@@ -356,7 +356,7 @@ RUN \
         --with-openssl --with-png-dir --with-zlib --with-mhash \
         --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
     && make -j "$(nproc)" && make install \
-    && rm -rf ${DOWNLOAD_DIR}/php-${PHP55_VERSION}* \
+    && rm -rf /tmp/php-${PHP55_VERSION}* \
     && mkdir -p ${PHP55_LOG_DIR} \
     && chown php:php -R ${PHP55_LOG_DIR} \
     && mkdir -p ${PHP55_CONF_DIR} \
@@ -378,7 +378,7 @@ ENV PHP53_VERSION=5.3.29 \
 RUN \
     #DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd ${DOWNLOAD_DIR} \
+    && cd /tmp \
     && curl -fSL http://jp2.php.net/get/php-${PHP53_VERSION}.tar.xz/from/this/mirror -o php-${PHP53_VERSION}.tar.xz \
     && tar xf php-${PHP53_VERSION}.tar.xz && cd php-${PHP53_VERSION} \
     && ./configure --prefix=${PHP53_INSTALL_DIR} \
@@ -392,7 +392,7 @@ RUN \
             --with-mhash --with-curl --with-mysql=mysqlnd \
             --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
     && make -j "$(nproc)" && make install \
-    && rm -rf ${DOWNLOAD_DIR}/php-${PHP53_VERSION}* \
+    && rm -rf /tmp/php-${PHP53_VERSION}* \
     && mkdir -p ${PHP53_LOG_DIR} \
     && chown php:php -R ${PHP53_LOG_DIR} \
     && mkdir -p ${PHP53_CONF_DIR} \
@@ -406,7 +406,7 @@ RUN chmod +x ${PHP53_FPM_DIR}
 # 安装 PHP gearman 扩展
 ENV PHP_EXT_GEARMAN=gearman-1.1.2
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_GEARMAN}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_GEARMAN}.tgz -o ${PHP_EXT_GEARMAN}.tgz \
     # 安装PHP5.6扩展
@@ -431,12 +431,12 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_GEARMAN} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_GEARMAN}**
+    && rm -rf /tmp/${PHP_EXT_GEARMAN}**
 
 # 安装 PHP memcache 扩展
 ENV PHP_EXT_MEMCACHE=memcache-3.0.8
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_MEMCACHE}* \
     && curl -fSL http://pecl.php.net/get/${PHP_EXT_MEMCACHE}.tgz -o ${PHP_EXT_MEMCACHE}.tgz \
     # 安装PHP5.6扩展
@@ -461,14 +461,14 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_MEMCACHE} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_MEMCACHE}*
+    && rm -rf /tmp/${PHP_EXT_MEMCACHE}*
 
 # 安装 PHP memcached 扩展
 ENV PHP_EXT_MEMCACHED=memcached-2.2.0
 RUN \
     #DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libmemcached-dev \
-    && cd ${DOWNLOAD_DIR} \
+    && cd /tmp \
     && rm -rf ${PHP_EXT_MEMCACHED}* \
     && curl -fSL http://pecl.php.net/get/${PHP_EXT_MEMCACHED}.tgz -o ${PHP_EXT_MEMCACHED}.tgz \
     # 安装PHP5.6扩展
@@ -493,12 +493,12 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_MEMCACHED} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_MEMCACHED}*
+    && rm -rf /tmp/${PHP_EXT_MEMCACHED}*
 
 # 安装 PHP msgpack 扩展
 ENV PHP_EXT_MSGPACK=msgpack-0.5.7
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_MSGPACK}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_MSGPACK}.tgz -o ${PHP_EXT_MSGPACK}.tgz \
     # 安装PHP5.6扩展
@@ -523,12 +523,12 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_MSGPACK} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_MSGPACK}*
+    && rm -rf /tmp/${PHP_EXT_MSGPACK}*
 
 # 安装 PHP yar 扩展
 ENV PHP_EXT_YAR=yar-1.2.5
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_YAR}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_YAR}.tgz -o ${PHP_EXT_YAR}.tgz \
     # 安装PHP5.6扩展
@@ -553,12 +553,12 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_YAR} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_YAR}*
+    && rm -rf /tmp/${PHP_EXT_YAR}*
 
 # 安装 PHP redis 扩展
 ENV PHP_EXT_REDIS=redis-3.1.1
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_REDIS}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_REDIS}.tgz -o ${PHP_EXT_REDIS}.tgz \
     # 安装PHP5.6扩展
@@ -583,12 +583,12 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_REDIS} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_REDIS}*
+    && rm -rf /tmp/${PHP_EXT_REDIS}*
 
 # 安装 PHP SeasLog 扩展
 ENV PHP_EXT_SEASLOG=SeasLog-1.6.9
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_SEASLOG}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_SEASLOG}.tgz -o ${PHP_EXT_SEASLOG}.tgz \
     # 安装PHP5.6扩展
@@ -613,12 +613,12 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_SEASLOG} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_SEASLOG}*
+    && rm -rf /tmp/${PHP_EXT_SEASLOG}*
 
 # 安装 PHP swoole 扩展
 ENV PHP_EXT_SWOOLE=1.9.6
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_SWOOLE}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_SWOOLE}.tgz -o ${PHP_EXT_SWOOLE}.tgz \
     # 安装PHP5.6扩展
@@ -643,12 +643,12 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_SWOOLE} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_SWOOLE}*
+    && rm -rf /tmp/${PHP_EXT_SWOOLE}*
 
 # 安装 PHP yac 扩展
 ENV PHP_EXT_YAC=yac-0.9.2
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_YAC}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_YAC}.tgz -o ${PHP_EXT_YAC}.tgz \
     # 安装PHP5.6扩展
@@ -673,12 +673,12 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_YAC} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_YAC}*
+    && rm -rf /tmp/${PHP_EXT_YAC}*
 
 # 安装 PHP yaf 扩展
 ENV PHP_EXT_YAF=yaf-2.3.5
 RUN \
-    cd ${DOWNLOAD_DIR} \
+    cd /tmp \
     && rm -rf ${PHP_EXT_YAF}* \
     && curl -fSL https://pecl.php.net/get/${PHP_EXT_YAF}.tgz -o ${PHP_EXT_YAF}.tgz \
     # 安装PHP5.6扩展
@@ -703,7 +703,7 @@ RUN \
     && make && make install \
     && rm -rf ${PHP_EXT_YAF} \
     # 删除临时文件
-    && rm -rf ${DOWNLOAD_DIR}/${PHP_EXT_YAF}*
+    && rm -rf /tmp/${PHP_EXT_YAF}*
 
 
 # 安装 nodejs
