@@ -456,7 +456,7 @@ RUN \
     && tar xf php-${PHP71_VERSION}.tar.xz && cd php-${PHP71_VERSION} \
     && ./configure --prefix=${PHP71_INSTALL_DIR} \
         --with-config-file-path=${PHP71_CONF_DIR} \
-        --with-config-file-scan-dir=${PHP71_CONF_DIR}/conf.d
+        --with-config-file-scan-dir=${PHP71_CONF_DIR}/conf.d \
         --enable-pcntl --enable-fpm --enable-gd-native-ttf \
         --with-freetype-dir --enable-bcmath --enable-sysvmsg \
         --enable-sysvsem --enable-sysvshm --enable-soap \
