@@ -440,6 +440,43 @@ COPY ${ROOT_DIR}/php53/php-fpm.conf ${PHP53_CONF_DIR}/php-fpm.conf
 COPY ${ROOT_DIR}/php53/php.ini ${PHP53_CONF_DIR}/php.ini
 RUN chmod +x ${PHP53_FPM_DIR}
 
+# 安装 PHP7.1
+ENV PHP71_VERSION=7.1.3 \
+    PHP71_INSTALL_DIR=/opt/app/php71 \
+    PHP71_CONF_DIR=/etc/php71 \
+    PHP71_LOG_DIR=/data/logs/php71 \
+    PHP71_FPM_DIR=/etc/init.d/php-fpm-71
+
+# 编译安装
+RUN \
+    #DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
+    && cd /tmp \
+    && curl -fSL http://jp2.php.net/get/php-${PHP71_VERSION}.tar.xz/from/this/mirror -o php-${PHP71_VERSION}.tar.xz \
+    && tar xf php-${PHP71_VERSION}.tar.xz && cd php-${PHP71_VERSION} \
+    && ./configure --prefix=${PHP71_INSTALL_DIR} \
+        --with-config-file-path=${PHP71_CONF_DIR} \
+        --with-config-file-scan-dir=${PHP71_CONF_DIR}/conf.d
+        --enable-pcntl --enable-fpm --enable-gd-native-ttf \
+        --with-freetype-dir --enable-bcmath --enable-sysvmsg \
+        --enable-sysvsem --enable-sysvshm --enable-soap \
+        --enable-opcache --enable-mysqlnd --enable-exif \
+        --enable-sockets --enable-mbstring --enable-zip \
+        --disable-ipv6 --disable-cgi --with-gd --with-jpeg-dir \
+        --with-openssl --with-png-dir --with-zlib --with-mhash \
+        --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+    && make -j "$(nproc)" && make install \
+    && rm -rf /tmp/php-${PHP71_VERSION}* \
+    && mkdir -p ${PHP71_LOG_DIR} \
+    && chown php:php -R ${PHP71_LOG_DIR} \
+    && mkdir -p ${PHP71_CONF_DIR} \
+    && ln -sf ${PHP71_CONF_DIR} ${PHP71_INSTALL_DIR}/etc
+
+COPY ${ROOT_DIR}/php71/php-fpm-71 ${PHP71_FPM_DIR}
+COPY ${ROOT_DIR}/php71/php-fpm.conf ${PHP71_CONF_DIR}/php-fpm.conf
+COPY ${ROOT_DIR}/php71/php.ini ${PHP71_CONF_DIR}/php.ini
+RUN chmod +x ${PHP71_FPM_DIR}
+
 # 安装 PHP gearman 扩展
 ENV PHP_EXT_GEARMAN=gearman-1.1.2
 RUN \
@@ -532,6 +569,24 @@ RUN \
     # 删除临时文件
     && rm -rf /tmp/${PHP_EXT_MEMCACHED}*
 
+# 安装 PHP7 memcached 扩展
+ENV PHP7_EXT_MEMCACHED=memcached-3.0.3
+RUN \
+    #DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libmemcached-dev \
+    && cd /tmp \
+    && rm -rf ${PHP7_EXT_MEMCACHED}* \
+    && curl -fSL http://pecl.php.net/get/${PHP7_EXT_MEMCACHED}.tgz -o ${PHP7_EXT_MEMCACHED}.tgz \
+    # 安装PHP7扩展
+    && cd /tmp && tar xzf ${PHP7_EXT_MEMCACHED}.tgz \
+    && cd ${PHP7_EXT_MEMCACHED} \
+    && ${PHP71_INSTALL_DIR}/bin/phpize \
+    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf ${PHP7_EXT_MEMCACHED} \
+    # 删除临时文件
+    && rm -rf /tmp/${PHP7_EXT_MEMCACHED}*
+
 # 安装 PHP msgpack 扩展
 ENV PHP_EXT_MSGPACK=msgpack-0.5.7
 RUN \
@@ -561,6 +616,22 @@ RUN \
     && rm -rf ${PHP_EXT_MSGPACK} \
     # 删除临时文件
     && rm -rf /tmp/${PHP_EXT_MSGPACK}*
+
+# 安装 PHP7 msgpack 扩展
+ENV PHP7_EXT_MSGPACK=msgpack-2.0.2
+RUN \
+    cd /tmp \
+    && rm -rf ${PHP7_EXT_MSGPACK}* \
+    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_MSGPACK}.tgz -o ${PHP7_EXT_MSGPACK}.tgz \
+    # 安装PHP7扩展
+    && cd /tmp && tar xzf ${PHP7_EXT_MSGPACK}.tgz \
+    && cd ${PHP7_EXT_MSGPACK} \
+    && ${PHP71_INSTALL_DIR}/bin/phpize \
+    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf ${PHP7_EXT_MSGPACK} \
+    # 删除临时文件
+    && rm -rf /tmp/${PHP7_EXT_MSGPACK}*
 
 # 安装 PHP yar 扩展
 ENV PHP_EXT_YAR=yar-1.2.5
@@ -592,6 +663,22 @@ RUN \
     # 删除临时文件
     && rm -rf /tmp/${PHP_EXT_YAR}*
 
+# 安装 PHP7 yar 扩展
+ENV PHP7_EXT_YAR=yar-2.0.2
+RUN \
+    cd /tmp \
+    && rm -rf ${PHP7_EXT_YAR}* \
+    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_YAR}.tgz -o ${PHP7_EXT_YAR}.tgz \
+    # 安装PHP7扩展
+    && cd /tmp && tar xzf ${PHP7_EXT_YAR}.tgz \
+    && cd ${PHP7_EXT_YAR} \
+    && ${PHP71_INSTALL_DIR}/bin/phpize \
+    && ./configure --enable-msgpack --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf ${PHP7_EXT_YAR} \
+    # 删除临时文件
+    && rm -rf /tmp/${PHP7_EXT_YAR}*
+
 # 安装 PHP redis 扩展
 ENV PHP_EXT_REDIS=redis-3.1.1
 RUN \
@@ -617,6 +704,13 @@ RUN \
     && cd ${PHP_EXT_REDIS} \
     && ${PHP53_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf ${PHP_EXT_REDIS} \
+    # 安装PHP7扩展
+    && cd /tmp && tar xzf ${PHP_EXT_REDIS}.tgz \
+    && cd ${PHP_EXT_REDIS} \
+    && ${PHP71_INSTALL_DIR}/bin/phpize \
+    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_REDIS} \
     # 删除临时文件
@@ -647,6 +741,13 @@ RUN \
     && cd ${PHP_EXT_SEASLOG} \
     && ${PHP53_INSTALL_DIR}/bin/phpize \
     && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf ${PHP_EXT_SEASLOG} \
+    # 安装PHP7扩展
+    && cd /tmp && tar xzf ${PHP_EXT_SEASLOG}.tgz \
+    && cd ${PHP_EXT_SEASLOG} \
+    && ${PHP71_INSTALL_DIR}/bin/phpize \
+    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_SEASLOG} \
     # 删除临时文件
@@ -690,6 +791,13 @@ RUN \
     && ./configure --enable-async-redis --enable-async-httpclient --enable-sockets --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_SWOOLE} \
+    # 安装PHP7扩展
+    && cd /tmp && tar xzf ${PHP_EXT_SWOOLE}.tgz \
+    && cd ${PHP_EXT_SWOOLE} \
+    && ${PHP71_INSTALL_DIR}/bin/phpize \
+    && ./configure --enable-async-redis --enable-async-httpclient --enable-sockets --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf ${PHP_EXT_SWOOLE} \
     # 删除临时文件
     && rm -rf /tmp/${PHP_EXT_SWOOLE}*
 
@@ -723,6 +831,22 @@ RUN \
     # 删除临时文件
     && rm -rf /tmp/${PHP_EXT_YAC}*
 
+# 安装 PHP7 yac 扩展
+ENV PHP7_EXT_YAC=yac-2.0.1
+RUN \
+    cd /tmp \
+    && rm -rf ${PHP7_EXT_YAC}* \
+    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_YAC}.tgz -o ${PHP7_EXT_YAC}.tgz \
+    # 安装PHP7扩展
+    && cd /tmp && tar xzf ${PHP7_EXT_YAC}.tgz \
+    && cd ${PHP7_EXT_YAC} \
+    && ${PHP71_INSTALL_DIR}/bin/phpize \
+    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf ${PHP7_EXT_YAC} \
+    # 删除临时文件
+    && rm -rf /tmp/${PHP7_EXT_YAC}*
+
 # 安装 PHP yaf 扩展
 ENV PHP_EXT_YAF=yaf-2.3.5
 RUN \
@@ -753,170 +877,6 @@ RUN \
     # 删除临时文件
     && rm -rf /tmp/${PHP_EXT_YAF}*
 
-# 安装 PHP zendopcache 扩展,只有PHP5.3才需要手动安装
-ENV PHP_EXT_ZENDOPCACHE=zendopcache-7.0.5
-RUN \
-    cd /tmp \
-    && rm -rf ${PHP_EXT_ZENDOPCACHE}* \
-    && curl -fSL https://pecl.php.net/get/${PHP_EXT_ZENDOPCACHE}.tgz -o ${PHP_EXT_ZENDOPCACHE}.tgz \
-    && tar xzf ${PHP_EXT_ZENDOPCACHE}.tgz \
-    && cd ${PHP_EXT_ZENDOPCACHE} \
-    && ${PHP53_INSTALL_DIR}/bin/phpize \
-    && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
-    && make && make install \
-    && rm -rf /tmp/${PHP_EXT_ZENDOPCACHE}*
-
-# 安装 PHP7.1
-ENV PHP71_VERSION=7.1.3 \
-    PHP71_INSTALL_DIR=/opt/app/php71 \
-    PHP71_CONF_DIR=/etc/php71 \
-    PHP71_LOG_DIR=/data/logs/php71 \
-    PHP71_FPM_DIR=/etc/init.d/php-fpm-71
-
-# 编译安装
-RUN \
-    #DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd /tmp \
-    && curl -fSL http://jp2.php.net/get/php-${PHP71_VERSION}.tar.xz/from/this/mirror -o php-${PHP71_VERSION}.tar.xz \
-    && tar xf php-${PHP71_VERSION}.tar.xz && cd php-${PHP71_VERSION} \
-    && ./configure --prefix=${PHP71_INSTALL_DIR} \
-        --with-config-file-path=${PHP71_CONF_DIR} \
-        --with-config-file-scan-dir=${PHP71_CONF_DIR}/conf.d
-        --enable-pcntl --enable-fpm --enable-gd-native-ttf \
-        --with-freetype-dir --enable-bcmath --enable-sysvmsg \
-        --enable-sysvsem --enable-sysvshm --enable-soap \
-        --enable-opcache --enable-mysqlnd --enable-exif \
-        --enable-sockets --enable-mbstring --enable-zip \
-        --disable-ipv6 --disable-cgi --with-gd --with-jpeg-dir \
-        --with-openssl --with-png-dir --with-zlib --with-mhash \
-        --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
-    && make -j "$(nproc)" && make install \
-    && rm -rf /tmp/php-${PHP71_VERSION}* \
-    && mkdir -p ${PHP71_LOG_DIR} \
-    && chown php:php -R ${PHP71_LOG_DIR} \
-    && mkdir -p ${PHP71_CONF_DIR} \
-    && ln -sf ${PHP71_CONF_DIR} ${PHP71_INSTALL_DIR}/etc
-
-COPY ${ROOT_DIR}/php71/php-fpm-71 ${PHP71_FPM_DIR}
-COPY ${ROOT_DIR}/php71/php-fpm.conf ${PHP71_CONF_DIR}/php-fpm.conf
-COPY ${ROOT_DIR}/php71/php.ini ${PHP71_CONF_DIR}/php.ini
-RUN chmod +x ${PHP71_FPM_DIR}
-
-# 安装 PHP7 memcached 扩展
-ENV PHP7_EXT_MEMCACHED=memcached-3.0.3
-RUN \
-    #DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libmemcached-dev \
-    && cd /tmp \
-    && rm -rf ${PHP7_EXT_MEMCACHED}* \
-    && curl -fSL http://pecl.php.net/get/${PHP7_EXT_MEMCACHED}.tgz -o ${PHP7_EXT_MEMCACHED}.tgz \
-    # 安装PHP7扩展
-    && cd /tmp && tar xzf ${PHP7_EXT_MEMCACHED}.tgz \
-    && cd ${PHP7_EXT_MEMCACHED} \
-    && ${PHP71_INSTALL_DIR}/bin/phpize \
-    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
-    && make && make install \
-    && rm -rf ${PHP7_EXT_MEMCACHED} \
-    # 删除临时文件
-    && rm -rf /tmp/${PHP7_EXT_MEMCACHED}*
-
-# 安装 PHP7 msgpack 扩展
-ENV PHP7_EXT_MSGPACK=msgpack-2.0.2
-RUN \
-    cd /tmp \
-    && rm -rf ${PHP7_EXT_MSGPACK}* \
-    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_MSGPACK}.tgz -o ${PHP7_EXT_MSGPACK}.tgz \
-    # 安装PHP7扩展
-    && cd /tmp && tar xzf ${PHP7_EXT_MSGPACK}.tgz \
-    && cd ${PHP7_EXT_MSGPACK} \
-    && ${PHP71_INSTALL_DIR}/bin/phpize \
-    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
-    && make && make install \
-    && rm -rf ${PHP7_EXT_MSGPACK} \
-    # 删除临时文件
-    && rm -rf /tmp/${PHP7_EXT_MSGPACK}*
-
-# 安装 PHP7 yar 扩展
-ENV PHP7_EXT_YAR=yar-2.0.2
-RUN \
-    cd /tmp \
-    && rm -rf ${PHP7_EXT_YAR}* \
-    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_YAR}.tgz -o ${PHP7_EXT_YAR}.tgz \
-    # 安装PHP7扩展
-    && cd /tmp && tar xzf ${PHP7_EXT_YAR}.tgz \
-    && cd ${PHP7_EXT_YAR} \
-    && ${PHP71_INSTALL_DIR}/bin/phpize \
-    && ./configure --enable-msgpack --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
-    && make && make install \
-    && rm -rf ${PHP7_EXT_YAR} \
-    # 删除临时文件
-    && rm -rf /tmp/${PHP7_EXT_YAR}*
-
-# 安装 PHP redis 扩展
-ENV PHP7_EXT_REDIS=redis-3.1.1
-RUN \
-    cd /tmp \
-    && rm -rf ${PHP7_EXT_REDIS}* \
-    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_REDIS}.tgz -o ${PHP7_EXT_REDIS}.tgz \
-    # 安装PHP7扩展
-    && cd /tmp && tar xzf ${PHP7_EXT_REDIS}.tgz \
-    && cd ${PHP7_EXT_REDIS} \
-    && ${PHP71_INSTALL_DIR}/bin/phpize \
-    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
-    && make && make install \
-    && rm -rf ${PHP7_EXT_REDIS} \
-    # 删除临时文件
-    && rm -rf /tmp/${PHP7_EXT_REDIS}*
-
-# 安装 PHP SeasLog 扩展
-ENV PHP7_EXT_SEASLOG=SeasLog-1.6.9
-RUN \
-    cd /tmp \
-    && rm -rf ${PHP7_EXT_SEASLOG}* \
-    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_SEASLOG}.tgz -o ${PHP7_EXT_SEASLOG}.tgz \
-    # 安装PHP7扩展
-    && cd /tmp && tar xzf ${PHP7_EXT_SEASLOG}.tgz \
-    && cd ${PHP7_EXT_SEASLOG} \
-    && ${PHP71_INSTALL_DIR}/bin/phpize \
-    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
-    && make && make install \
-    && rm -rf ${PHP7_EXT_SEASLOG} \
-    # 删除临时文件
-    && rm -rf /tmp/${PHP7_EXT_SEASLOG}*
-
-# 安装 PHP swoole 扩展
-ENV PHP7_EXT_SWOOLE=swoole-1.9.8
-RUN \
-    cd /tmp \
-    && rm -rf ${PHP7_EXT_SWOOLE}* \
-    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_SWOOLE}.tgz -o ${PHP7_EXT_SWOOLE}.tgz \
-    # 安装PHP7扩展
-    && cd /tmp && tar xzf ${PHP7_EXT_SWOOLE}.tgz \
-    && cd ${PHP7_EXT_SWOOLE} \
-    && ${PHP71_INSTALL_DIR}/bin/phpize \
-    && ./configure --enable-async-redis --enable-async-httpclient --enable-sockets --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
-    && make && make install \
-    && rm -rf ${PHP7_EXT_SWOOLE} \
-    # 删除临时文件
-    && rm -rf /tmp/${PHP7_EXT_SWOOLE}*
-
-# 安装 PHP7 yac 扩展
-ENV PHP7_EXT_YAC=yac-2.0.1
-RUN \
-    cd /tmp \
-    && rm -rf ${PHP7_EXT_YAC}* \
-    && curl -fSL https://pecl.php.net/get/${PHP7_EXT_YAC}.tgz -o ${PHP7_EXT_YAC}.tgz \
-    # 安装PHP7扩展
-    && cd /tmp && tar xzf ${PHP7_EXT_YAC}.tgz \
-    && cd ${PHP7_EXT_YAC} \
-    && ${PHP71_INSTALL_DIR}/bin/phpize \
-    && ./configure --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
-    && make && make install \
-    && rm -rf ${PHP7_EXT_YAC} \
-    # 删除临时文件
-    && rm -rf /tmp/${PHP7_EXT_YAC}*
-
 # 安装 PHP7 yaf 扩展
 ENV PHP7_EXT_YAF=yaf-3.0.4
 RUN \
@@ -933,6 +893,18 @@ RUN \
     # 删除临时文件
     && rm -rf /tmp/${PHP7_EXT_YAF}*
 
+# 安装 PHP zendopcache 扩展,只有PHP5.3才需要手动安装
+ENV PHP_EXT_ZENDOPCACHE=zendopcache-7.0.5
+RUN \
+    cd /tmp \
+    && rm -rf ${PHP_EXT_ZENDOPCACHE}* \
+    && curl -fSL https://pecl.php.net/get/${PHP_EXT_ZENDOPCACHE}.tgz -o ${PHP_EXT_ZENDOPCACHE}.tgz \
+    && tar xzf ${PHP_EXT_ZENDOPCACHE}.tgz \
+    && cd ${PHP_EXT_ZENDOPCACHE} \
+    && ${PHP53_INSTALL_DIR}/bin/phpize \
+    && ./configure --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
+    && make && make install \
+    && rm -rf /tmp/${PHP_EXT_ZENDOPCACHE}*
 
 # 安装 nodejs
 RUN \
