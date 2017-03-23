@@ -2,9 +2,6 @@
 FROM debian:jessie
 MAINTAINER DongNan <dongyh@126.com>
 
-# 替换apt源
-COPY 163.sources.list /etc/apt/sources.list
-
 ENV GOSU_VERSION=1.7
 RUN \
     # add gosu for easy step-down from root
@@ -911,7 +908,6 @@ RUN \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs
 
-
 # 安装 supervisord
 RUN \
     #DEBIAN_FRONTEND=noninteractive apt-get update && \
@@ -921,7 +917,6 @@ RUN \
 # 复制supervisor配置文件
 COPY supervisor /etc/supervisor
 COPY supervisor/supervisor /etc/init.d/supervisor
-
 
 # 删除无用文件,创建目录
 RUN \
