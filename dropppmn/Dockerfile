@@ -5,13 +5,8 @@ MAINTAINER DongNan <dongyh@126.com>
 # 替换apt源
 #COPY 163.sources.list /etc/apt/sources.list
 
-# 安装 mysql (percona-5.7)
-ENV PERCONA_MAJOR=5.7 \
-    PERCONA_VERSION=5.7.15-9-1.jessie \
-    GOSU_VERSION=1.7 \
-    MYSQL_DATA_DIR=/data/mysql
-# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r mysql && useradd -r -g mysql mysql
+
+ENV GOSU_VERSION=1.7
 RUN \
     # add gosu for easy step-down from root
     set -x \
@@ -47,6 +42,14 @@ RUN \
     # sub   4096R/4CAC6D72 2016-06-30
     4D1BB29D63D98E422B2113B19334A25F8507EFA5
 
+# 安装 mysql (percona-5.7)
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r mysql && useradd -r -g mysql mysql
+
+ENV PERCONA_MAJOR=5.7 \
+    PERCONA_VERSION=5.7.17-11-1.jessie \
+    MYSQL_DATA_DIR=/data/mysql
+
 RUN echo 'deb https://repo.percona.com/apt jessie main' > /etc/apt/sources.list.d/percona.list
 
 # we set debconf keys to make APT a little quieter
@@ -54,9 +57,8 @@ RUN { \
             echo percona-server-server-$PERCONA_MAJOR percona-server-server/root_password password 'unused'; \
             echo percona-server-server-$PERCONA_MAJOR percona-server-server/root_password_again password 'unused'; \
         } | debconf-set-selections \
-    && DEBIAN_FRONTEND=noninteractive apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        percona-server-server-$PERCONA_MAJOR=$PERCONA_VERSION \
+    && apt-get update \
+    && apt-get install -y percona-server-server-$PERCONA_MAJOR=$PERCONA_VERSION \
     #&& rm -rf /var/lib/apt/lists/* \
     && rm -rf /etc/apt/sources.list.d/percona.list \
     # purge and re-create /data/mysql with appropriate ownership
