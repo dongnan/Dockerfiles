@@ -3,7 +3,7 @@ FROM debian:jessie
 MAINTAINER DongNan <dongyh@126.com>
 
 # 替换apt源
-COPY 163.sources.list /etc/apt/sources.list
+#COPY 163.sources.list /etc/apt/sources.list
 
 # 安装 mysql (percona-5.7)
 ENV PERCONA_MAJOR=5.7 \
