@@ -461,7 +461,7 @@ RUN \
         --enable-sockets --enable-mbstring --enable-zip \
         --disable-ipv6 --disable-cgi --with-gd --with-jpeg-dir \
         --with-openssl --with-png-dir --with-zlib --with-mhash \
-        --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+        --with-curl --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
     && make -j "$(nproc)" && make install \
     && rm -rf /tmp/php-${PHP71_VERSION}* \
     && mkdir -p ${PHP71_LOG_DIR} \
@@ -771,28 +771,28 @@ RUN \
     && cd /tmp && tar xzf ${PHP_EXT_SWOOLE}.tgz \
     && cd ${PHP_EXT_SWOOLE} \
     && ${PHP56_INSTALL_DIR}/bin/phpize \
-    && ./configure --enable-async-redis --enable-async-httpclient --enable-sockets --with-php-config=${PHP56_INSTALL_DIR}/bin/php-config \
+    && ./configure --enable-async-redis --enable-sockets --with-php-config=${PHP56_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_SWOOLE} \
     # 安装PHP5.5扩展
     && cd /tmp && tar xzf ${PHP_EXT_SWOOLE}.tgz \
     && cd ${PHP_EXT_SWOOLE} \
     && ${PHP55_INSTALL_DIR}/bin/phpize \
-    && ./configure --enable-async-redis --enable-async-httpclient --enable-sockets --with-php-config=${PHP55_INSTALL_DIR}/bin/php-config \
+    && ./configure --enable-async-redis --enable-sockets --with-php-config=${PHP55_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_SWOOLE} \
     # 安装PHP5.3扩展
     && cd /tmp && tar xzf ${PHP_EXT_SWOOLE}.tgz \
     && cd ${PHP_EXT_SWOOLE} \
     && ${PHP53_INSTALL_DIR}/bin/phpize \
-    && ./configure --enable-async-redis --enable-async-httpclient --enable-sockets --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
+    && ./configure --enable-async-redis --enable-sockets --with-php-config=${PHP53_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_SWOOLE} \
     # 安装PHP7扩展
     && cd /tmp && tar xzf ${PHP_EXT_SWOOLE}.tgz \
     && cd ${PHP_EXT_SWOOLE} \
     && ${PHP71_INSTALL_DIR}/bin/phpize \
-    && ./configure --enable-async-redis --enable-async-httpclient --enable-sockets --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
+    && ./configure --enable-async-redis --enable-sockets --with-php-config=${PHP71_INSTALL_DIR}/bin/php-config \
     && make && make install \
     && rm -rf ${PHP_EXT_SWOOLE} \
     # 删除临时文件
