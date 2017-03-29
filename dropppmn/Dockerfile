@@ -2,10 +2,6 @@
 FROM debian:jessie
 MAINTAINER DongNan <dongyh@126.com>
 
-# 替换apt源
-#COPY 163.sources.list /etc/apt/sources.list
-
-
 ENV GOSU_VERSION=1.7
 RUN \
     # add gosu for easy step-down from root
@@ -314,6 +310,9 @@ RUN \
     #&& rm -rf /var/lib/apt/lists/* \
     && make && make install \
     && rm -rf /tmp/gearmand-${GEARMAND_VERSION}*
+
+# 替换apt源
+COPY 163.sources.list /etc/apt/sources.list
 
 # 创建 php 用户
 RUN groupadd -r php && useradd -r -g php php
