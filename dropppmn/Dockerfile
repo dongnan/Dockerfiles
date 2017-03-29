@@ -54,7 +54,7 @@ RUN set -ex; \
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
 ENV PERCONA_MAJOR=5.7 \
-    PERCONA_VERSION=5.7.17-11-1.jessie \
+    PERCONA_VERSION=5.7.17-12-1.jessie \
     MYSQL_DATA_DIR=/data/mysql
 
 RUN echo 'deb https://repo.percona.com/apt jessie main' > /etc/apt/sources.list.d/percona.list
