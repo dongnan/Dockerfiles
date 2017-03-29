@@ -296,7 +296,7 @@ ENV PHP_DEPS \
 
 # 安装 PHP5.6
 ENV PHP56_VERSION=5.6.28 \
-    PHP56_INSTALL_DIR=/opt/app56/php \
+    PHP56_INSTALL_DIR=/opt/app/php56 \
     PHP56_CONF_DIR=/etc/php56 \
     PHP56_LOG_DIR=/data/logs/php56 \
     PHP56_FPM_DIR=/etc/init.d/php-fpm-56
