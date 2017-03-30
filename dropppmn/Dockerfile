@@ -34,7 +34,6 @@ COPY mysql/debian.cnf /etc/mysql/debian.cnf
 COPY mysql/mysql /etc/init.d/mysql
 RUN chmod +x /etc/init.d/mysql
 
-
 # 安装openresty
 ENV RESTY_VERSION="1.11.2.2" \
     RESTY_LUAROCKS_VERSION="2.3.0" \
@@ -277,9 +276,6 @@ RUN \
     #&& rm -rf /var/lib/apt/lists/* \
     && make && make install \
     && rm -rf /tmp/gearmand-${GEARMAND_VERSION}*
-
-# 替换apt源
-COPY 163.sources.list /etc/apt/sources.list
 
 # 创建 php 用户
 RUN groupadd -r php && useradd -r -g php php
