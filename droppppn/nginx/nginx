@@ -1,0 +1,52 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          nginx
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts nginx
+# Description:       starts nginx web server
+### END INIT INFO
+
+
+NGINX_BIN=/opt/app/nginx/sbin/nginx
+
+case "$1" in
+    start)
+        echo -n "Starting nginx "
+        $NGINX_BIN
+        echo " done"
+    ;;
+
+    stop)
+        echo -n "Stopping nginx "
+        $NGINX_BIN -s stop
+        echo " done"
+    ;;
+
+    reopen)
+        $NGINX_BIN -s reopen
+    ;;
+
+    restart)
+        $NGINX_BIN -s stop
+        $NGINX_BIN 
+    ;;
+
+    reload)
+        echo -n "Reloading nginx "
+        $NGINX_BIN -s reload
+        echo " done"
+    ;;
+    test)
+        $NGINX_BIN -t
+    ;;
+
+    *)
+        echo "Usage: $0 {start|stop|reopen|reload|test}"
+        exit 1
+    ;;
+
+esac
+
