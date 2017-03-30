@@ -270,7 +270,7 @@ ENV PHP_DEPS \
                 libfreetype6-dev libbz2-dev zlib1g-dev libicu-dev
 
 # 安装 PHP5.6
-ENV PHP56_VERSION=5.6.28 \
+ENV PHP56_VERSION=5.6.30 \
     PHP56_INSTALL_DIR=/opt/app/php56 \
     PHP56_CONF_DIR=/etc/php56 \
     PHP56_LOG_DIR=/data/logs/php56 \
