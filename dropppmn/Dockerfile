@@ -302,78 +302,6 @@ ENV PHP_DEPS \
                 openssl libcurl4-openssl-dev libssl-dev libmcrypt-dev \
                 libfreetype6-dev libbz2-dev zlib1g-dev libicu-dev
 
-# 安装 PHP5.6
-ENV PHP56_VERSION=5.6.30 \
-    PHP56_INSTALL_DIR=/opt/app/php56 \
-    PHP56_CONF_DIR=/etc/php56 \
-    PHP56_LOG_DIR=/data/logs/php56 \
-    PHP56_FPM_DIR=/etc/init.d/php-fpm-56
-
-# 编译安装
-RUN \
-    #DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd /tmp \
-    && curl -fSL http://jp2.php.net/get/php-${PHP56_VERSION}.tar.xz/from/this/mirror -o php-${PHP56_VERSION}.tar.xz \
-    && tar xf php-${PHP56_VERSION}.tar.xz && cd php-${PHP56_VERSION} \
-    && ./configure --prefix=${PHP56_INSTALL_DIR} \
-        --with-config-file-path=${PHP56_CONF_DIR} \
-        --enable-pcntl --enable-fpm --enable-gd-native-ttf \
-        --with-freetype-dir --enable-bcmath --enable-sysvmsg \
-        --enable-sysvsem --enable-sysvshm --enable-soap \
-        --enable-opcache --enable-mysqlnd --enable-exif \
-        --enable-sockets --enable-mbstring --enable-zip \
-        --disable-ipv6 --disable-cgi --with-gd --with-jpeg-dir \
-        --with-openssl --with-png-dir --with-zlib --with-mhash \
-        --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
-    && make -j "$(nproc)" && make install \
-    && rm -rf /tmp/php-${PHP56_VERSION}* \
-    && mkdir -p ${PHP56_LOG_DIR} \
-    && chown php:php -R ${PHP56_LOG_DIR} \
-    && mkdir -p ${PHP56_CONF_DIR} \
-    && ln -sf ${PHP56_CONF_DIR} ${PHP56_INSTALL_DIR}/etc
-
-COPY ${ROOT_DIR}/php56/php-fpm-56 ${PHP56_FPM_DIR}
-COPY ${ROOT_DIR}/php56/php-fpm.conf ${PHP56_CONF_DIR}/php-fpm.conf
-COPY ${ROOT_DIR}/php56/php.ini ${PHP56_CONF_DIR}/php.ini
-RUN chmod +x ${PHP56_FPM_DIR}
-
-# 安装 PHP5.5
-ENV PHP55_VERSION=5.5.38 \
-    PHP55_INSTALL_DIR=/opt/app/php55 \
-    PHP55_CONF_DIR=/etc/php55 \
-    PHP55_LOG_DIR=/data/logs/php55 \
-    PHP55_FPM_DIR=/etc/init.d/php-fpm-55
-
-# 编译安装
-RUN \
-    #DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd /tmp \
-    && curl -fSL http://jp2.php.net/get/php-${PHP55_VERSION}.tar.xz/from/this/mirror -o php-${PHP55_VERSION}.tar.xz \
-    && tar xf php-${PHP55_VERSION}.tar.xz && cd php-${PHP55_VERSION} \
-    && ./configure --prefix=${PHP55_INSTALL_DIR} \
-        --with-config-file-path=${PHP55_CONF_DIR} \
-        --enable-pcntl --enable-fpm --enable-gd-native-ttf \
-        --with-freetype-dir --enable-bcmath --enable-sysvmsg \
-        --enable-sysvsem --enable-sysvshm --enable-soap \
-        --enable-opcache --enable-mysqlnd --enable-exif \
-        --enable-sockets --enable-mbstring --enable-zip \
-        --disable-ipv6 --disable-cgi --with-gd --with-jpeg-dir \
-        --with-openssl --with-png-dir --with-zlib --with-mhash \
-        --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
-    && make -j "$(nproc)" && make install \
-    && rm -rf /tmp/php-${PHP55_VERSION}* \
-    && mkdir -p ${PHP55_LOG_DIR} \
-    && chown php:php -R ${PHP55_LOG_DIR} \
-    && mkdir -p ${PHP55_CONF_DIR} \
-    && ln -sf ${PHP55_CONF_DIR} ${PHP55_INSTALL_DIR}/etc
-
-COPY ${ROOT_DIR}/php55/php-fpm-55 ${PHP55_FPM_DIR}
-COPY ${ROOT_DIR}/php55/php-fpm.conf ${PHP55_CONF_DIR}/php-fpm.conf
-COPY ${ROOT_DIR}/php55/php.ini ${PHP55_CONF_DIR}/php.ini
-RUN chmod +x ${PHP55_FPM_DIR}
-
 # 安装 PHP5.3
 ENV PHP53_VERSION=5.3.29 \
     PHP53_INSTALL_DIR=/opt/app/php53 \
@@ -411,6 +339,78 @@ COPY ${ROOT_DIR}/php53/php-fpm-53 ${PHP53_FPM_DIR}
 COPY ${ROOT_DIR}/php53/php-fpm.conf ${PHP53_CONF_DIR}/php-fpm.conf
 COPY ${ROOT_DIR}/php53/php.ini ${PHP53_CONF_DIR}/php.ini
 RUN chmod +x ${PHP53_FPM_DIR}
+
+# 安装 PHP5.5
+ENV PHP55_VERSION=5.5.38 \
+    PHP55_INSTALL_DIR=/opt/app/php55 \
+    PHP55_CONF_DIR=/etc/php55 \
+    PHP55_LOG_DIR=/data/logs/php55 \
+    PHP55_FPM_DIR=/etc/init.d/php-fpm-55
+
+# 编译安装
+RUN \
+    #DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
+    && cd /tmp \
+    && curl -fSL http://jp2.php.net/get/php-${PHP55_VERSION}.tar.xz/from/this/mirror -o php-${PHP55_VERSION}.tar.xz \
+    && tar xf php-${PHP55_VERSION}.tar.xz && cd php-${PHP55_VERSION} \
+    && ./configure --prefix=${PHP55_INSTALL_DIR} \
+        --with-config-file-path=${PHP55_CONF_DIR} \
+        --enable-pcntl --enable-fpm --enable-gd-native-ttf \
+        --with-freetype-dir --enable-bcmath --enable-sysvmsg \
+        --enable-sysvsem --enable-sysvshm --enable-soap \
+        --enable-opcache --enable-mysqlnd --enable-exif \
+        --enable-sockets --enable-mbstring --enable-zip \
+        --disable-ipv6 --disable-cgi --with-gd --with-jpeg-dir \
+        --with-openssl --with-png-dir --with-zlib --with-mhash \
+        --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+    && make -j "$(nproc)" && make install \
+    && rm -rf /tmp/php-${PHP55_VERSION}* \
+    && mkdir -p ${PHP55_LOG_DIR} \
+    && chown php:php -R ${PHP55_LOG_DIR} \
+    && mkdir -p ${PHP55_CONF_DIR} \
+    && ln -sf ${PHP55_CONF_DIR} ${PHP55_INSTALL_DIR}/etc
+
+COPY ${ROOT_DIR}/php55/php-fpm-55 ${PHP55_FPM_DIR}
+COPY ${ROOT_DIR}/php55/php-fpm.conf ${PHP55_CONF_DIR}/php-fpm.conf
+COPY ${ROOT_DIR}/php55/php.ini ${PHP55_CONF_DIR}/php.ini
+RUN chmod +x ${PHP55_FPM_DIR}
+
+# 安装 PHP5.6
+ENV PHP56_VERSION=5.6.30 \
+    PHP56_INSTALL_DIR=/opt/app/php56 \
+    PHP56_CONF_DIR=/etc/php56 \
+    PHP56_LOG_DIR=/data/logs/php56 \
+    PHP56_FPM_DIR=/etc/init.d/php-fpm-56
+
+# 编译安装
+RUN \
+    #DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
+    && cd /tmp \
+    && curl -fSL http://jp2.php.net/get/php-${PHP56_VERSION}.tar.xz/from/this/mirror -o php-${PHP56_VERSION}.tar.xz \
+    && tar xf php-${PHP56_VERSION}.tar.xz && cd php-${PHP56_VERSION} \
+    && ./configure --prefix=${PHP56_INSTALL_DIR} \
+        --with-config-file-path=${PHP56_CONF_DIR} \
+        --enable-pcntl --enable-fpm --enable-gd-native-ttf \
+        --with-freetype-dir --enable-bcmath --enable-sysvmsg \
+        --enable-sysvsem --enable-sysvshm --enable-soap \
+        --enable-opcache --enable-mysqlnd --enable-exif \
+        --enable-sockets --enable-mbstring --enable-zip \
+        --disable-ipv6 --disable-cgi --with-gd --with-jpeg-dir \
+        --with-openssl --with-png-dir --with-zlib --with-mhash \
+        --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+    && make -j "$(nproc)" && make install \
+    && rm -rf /tmp/php-${PHP56_VERSION}* \
+    && mkdir -p ${PHP56_LOG_DIR} \
+    && chown php:php -R ${PHP56_LOG_DIR} \
+    && mkdir -p ${PHP56_CONF_DIR} \
+    && ln -sf ${PHP56_CONF_DIR} ${PHP56_INSTALL_DIR}/etc
+
+COPY ${ROOT_DIR}/php56/php-fpm-56 ${PHP56_FPM_DIR}
+COPY ${ROOT_DIR}/php56/php-fpm.conf ${PHP56_CONF_DIR}/php-fpm.conf
+COPY ${ROOT_DIR}/php56/php.ini ${PHP56_CONF_DIR}/php.ini
+RUN chmod +x ${PHP56_FPM_DIR}
 
 # 安装 PHP gearman 扩展
 ENV PHP_EXT_GEARMAN=gearman-1.1.2
