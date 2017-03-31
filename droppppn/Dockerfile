@@ -488,9 +488,7 @@ ENV PHP55_VERSION=5.5.38 \
 
 # 编译安装
 RUN \
-    #DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd /tmp \
+    cd /tmp \
     && curl -fSL http://jp2.php.net/get/php-${PHP55_VERSION}.tar.xz/from/this/mirror -o php-${PHP55_VERSION}.tar.xz \
     && tar xf php-${PHP55_VERSION}.tar.xz && cd php-${PHP55_VERSION} \
     && ./configure --prefix=${PHP55_INSTALL_DIR} \
@@ -667,9 +665,7 @@ ENV PHP56_VERSION=5.6.30 \
 
 # 编译安装
 RUN \
-    #DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd /tmp \
+    cd /tmp \
     && curl -fSL http://jp2.php.net/get/php-${PHP56_VERSION}.tar.xz/from/this/mirror -o php-${PHP56_VERSION}.tar.xz \
     && tar xf php-${PHP56_VERSION}.tar.xz && cd php-${PHP56_VERSION} \
     && ./configure --prefix=${PHP56_INSTALL_DIR} \
@@ -846,9 +842,7 @@ ENV PHP71_VERSION=7.1.3 \
 
 # 编译安装
 RUN \
-    #DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${PHPIZE_DEPS} ${PHP_DEPS} \
-    && cd /tmp \
+    cd /tmp \
     && curl -fSL http://jp2.php.net/get/php-${PHP71_VERSION}.tar.xz/from/this/mirror -o php-${PHP71_VERSION}.tar.xz \
     && tar xf php-${PHP71_VERSION}.tar.xz && cd php-${PHP71_VERSION} \
     && ./configure --prefix=${PHP71_INSTALL_DIR} \
