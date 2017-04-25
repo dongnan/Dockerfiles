@@ -320,9 +320,9 @@ RUN mkdir -p ${PHP53_LOG_DIR} \
     && rm -rf ${PHP53_INSTALL_DIR}/etc \
     && ln -s ${PHP53_CONF_DIR} ${PHP53_INSTALL_DIR}/etc
 
-COPY ${ROOT_DIR}/php53/php-fpm-53 ${PHP53_FPM_DIR}
-COPY ${ROOT_DIR}/php53/php-fpm.conf ${PHP53_CONF_DIR}/php-fpm.conf
-COPY ${ROOT_DIR}/php53/php.ini ${PHP53_CONF_DIR}/php.ini
+COPY php53/php-fpm-53 ${PHP53_FPM_DIR}
+COPY php53/php-fpm.conf ${PHP53_CONF_DIR}/php-fpm.conf
+COPY php53/php.ini ${PHP53_CONF_DIR}/php.ini
 RUN chmod +x ${PHP53_FPM_DIR}
 
 # 安装 PHP gearman 扩展
@@ -510,9 +510,9 @@ RUN mkdir -p ${PHP55_LOG_DIR} \
     && rm -rf ${PHP55_INSTALL_DIR}/etc \
     && ln -sf ${PHP55_CONF_DIR} ${PHP55_INSTALL_DIR}/etc
 
-COPY ${ROOT_DIR}/php55/php-fpm-55 ${PHP55_FPM_DIR}
-COPY ${ROOT_DIR}/php55/php-fpm.conf ${PHP55_CONF_DIR}/php-fpm.conf
-COPY ${ROOT_DIR}/php55/php.ini ${PHP55_CONF_DIR}/php.ini
+COPY php55/php-fpm-55 ${PHP55_FPM_DIR}
+COPY php55/php-fpm.conf ${PHP55_CONF_DIR}/php-fpm.conf
+COPY php55/php.ini ${PHP55_CONF_DIR}/php.ini
 RUN chmod +x ${PHP55_FPM_DIR}
 
 # 安装 PHP gearman 扩展
@@ -687,9 +687,9 @@ RUN mkdir -p ${PHP56_LOG_DIR} \
     && rm -rf ${PHP56_INSTALL_DIR}/etc \
     && ln -sf ${PHP56_CONF_DIR} ${PHP56_INSTALL_DIR}/etc
 
-COPY ${ROOT_DIR}/php56/php-fpm-56 ${PHP56_FPM_DIR}
-COPY ${ROOT_DIR}/php56/php-fpm.conf ${PHP56_CONF_DIR}/php-fpm.conf
-COPY ${ROOT_DIR}/php56/php.ini ${PHP56_CONF_DIR}/php.ini
+COPY php56/php-fpm-56 ${PHP56_FPM_DIR}
+COPY php56/php-fpm.conf ${PHP56_CONF_DIR}/php-fpm.conf
+COPY php56/php.ini ${PHP56_CONF_DIR}/php.ini
 RUN chmod +x ${PHP56_FPM_DIR}
 
 # 安装 PHP gearman 扩展
@@ -865,9 +865,9 @@ RUN mkdir -p ${PHP71_LOG_DIR} \
     && rm -rf ${PHP71_INSTALL_DIR}/etc \
     && ln -sf ${PHP71_CONF_DIR} ${PHP71_INSTALL_DIR}/etc
 
-COPY ${ROOT_DIR}/php71/php-fpm-71 ${PHP71_FPM_DIR}
-COPY ${ROOT_DIR}/php71/php-fpm.conf ${PHP71_CONF_DIR}/php-fpm.conf
-COPY ${ROOT_DIR}/php71/php.ini ${PHP71_CONF_DIR}/php.ini
+COPY php71/php-fpm-71 ${PHP71_FPM_DIR}
+COPY php71/php-fpm.conf ${PHP71_CONF_DIR}/php-fpm.conf
+COPY php71/php.ini ${PHP71_CONF_DIR}/php.ini
 RUN chmod +x ${PHP71_FPM_DIR}
 
 # 安装 PHP7 memcached 扩展
