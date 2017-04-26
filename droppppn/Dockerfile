@@ -6,9 +6,9 @@ MAINTAINER DongNan <dongyh@126.com>
 COPY 163.sources.list /etc/apt/sources.list
 
 # 安装openresty
-ENV RESTY_VERSION="1.11.2.2" \
+ENV RESTY_VERSION="1.11.2.3" \
     RESTY_LUAROCKS_VERSION="2.3.0" \
-    RESTY_OPENSSL_VERSION="1.0.2j" \
+    RESTY_OPENSSL_VERSION="1.0.2k" \
     RESTY_PCRE_VERSION="8.39" \
     RESTY_J="1" \
     RESTY_INSTALL_DIR=/opt/app/openresty \
@@ -89,7 +89,7 @@ RUN \
     && cd /tmp \
     && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
     && tar xzf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
-    && curl -fSL https://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
+    && curl -fSL https://ftp.pcre.org/pub/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
     && tar xzf pcre-${RESTY_PCRE_VERSION}.tar.gz \
     && curl -fSL https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz -o openresty-${RESTY_VERSION}.tar.gz \
     && tar xzf openresty-${RESTY_VERSION}.tar.gz \
@@ -1008,6 +1008,7 @@ RUN \
 # 复制supervisor配置文件
 COPY supervisor /etc/supervisor
 COPY supervisor/supervisor /etc/init.d/supervisor
+RUN chmod +x /etc/init.d/supervisor
 
 # 安装一些常用的工具
 RUN \
