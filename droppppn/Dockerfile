@@ -143,7 +143,8 @@ ENV MEMCACHED_BUILD_DEPS \
 		make \
 		perl
 
-RUN #DEBIAN_FRONTEND=noninteractive apt-get update && \
+RUN \
+    #DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y ${MEMCACHED_BUILD_DEPS} --no-install-recommends \
     && cd /tmp \
     && rm -rf memcached* \
