@@ -321,7 +321,8 @@ RUN mkdir -p ${PHP53_LOG_DIR} \
     && chown php:php -R ${PHP53_LOG_DIR} \
     && mkdir -p ${PHP53_CONF_DIR} \
     && rm -rf ${PHP53_INSTALL_DIR}/etc \
-    && ln -s ${PHP53_CONF_DIR} ${PHP53_INSTALL_DIR}/etc
+    && cd ${PHP53_INSTALL_DIR} \
+    && ln -s ${PHP53_CONF_DIR} etc
 
 COPY php53/php-fpm-53 ${PHP53_FPM_DIR}
 COPY php53/php-fpm.conf ${PHP53_CONF_DIR}/php-fpm.conf
@@ -511,7 +512,8 @@ RUN mkdir -p ${PHP55_LOG_DIR} \
     && chown php:php -R ${PHP55_LOG_DIR} \
     && mkdir -p ${PHP55_CONF_DIR} \
     && rm -rf ${PHP55_INSTALL_DIR}/etc \
-    && ln -sf ${PHP55_CONF_DIR} ${PHP55_INSTALL_DIR}/etc
+    && cd ${PHP55_INSTALL_DIR} \
+    && ln -sf ${PHP55_CONF_DIR} etc
 
 COPY php55/php-fpm-55 ${PHP55_FPM_DIR}
 COPY php55/php-fpm.conf ${PHP55_CONF_DIR}/php-fpm.conf
@@ -688,7 +690,8 @@ RUN mkdir -p ${PHP56_LOG_DIR} \
     && chown php:php -R ${PHP56_LOG_DIR} \
     && mkdir -p ${PHP56_CONF_DIR} \
     && rm -rf ${PHP56_INSTALL_DIR}/etc \
-    && ln -sf ${PHP56_CONF_DIR} ${PHP56_INSTALL_DIR}/etc
+    && cd ${PHP56_INSTALL_DIR} \
+    && ln -sf ${PHP56_CONF_DIR} etc
 
 COPY php56/php-fpm-56 ${PHP56_FPM_DIR}
 COPY php56/php-fpm.conf ${PHP56_CONF_DIR}/php-fpm.conf
@@ -866,7 +869,8 @@ RUN mkdir -p ${PHP71_LOG_DIR} \
     && chown php:php -R ${PHP71_LOG_DIR} \
     && mkdir -p ${PHP71_CONF_DIR} \
     && rm -rf ${PHP71_INSTALL_DIR}/etc \
-    && ln -sf ${PHP71_CONF_DIR} ${PHP71_INSTALL_DIR}/etc
+    && cd ${PHP71_INSTALL_DIR} \
+    && ln -sf ${PHP71_CONF_DIR} etc
 
 COPY php71/php-fpm-71 ${PHP71_FPM_DIR}
 COPY php71/php-fpm.conf ${PHP71_CONF_DIR}/php-fpm.conf
