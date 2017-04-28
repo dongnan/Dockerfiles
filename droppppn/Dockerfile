@@ -153,6 +153,7 @@ RUN #DEBIAN_FRONTEND=noninteractive apt-get update && \
     && tar -xzf memcached.tar.gz -C /tmp/memcached --strip-components=1 \
     && rm memcached.tar.gz \
     && cd /tmp/memcached \
+    && mkdir -p $MEMCACHED_INSTALL_DIR \
     && ./configure \
             --prefix=${MEMCACHED_INSTALL_DIR} \
             --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
