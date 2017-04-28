@@ -237,6 +237,7 @@ RUN \
     && cd /tmp \
     && curl -fSL $GEARMAND_DOWNLOAD_URL -o gearmand-${GEARMAND_VERSION}.tar.gz \
     && tar zxvf gearmand-${GEARMAND_VERSION}.tar.gz && cd gearmand-${GEARMAND_VERSION} \
+    && mkdir -p $GEARMAND_INSTALL_DIR \
     && ./configure --prefix=$GEARMAND_INSTALL_DIR \
         --with-sqlite3=no --disable-libdrizzle --disable-libmemcached \
         --disable-libpq  --with-mysql=no \
