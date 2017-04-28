@@ -165,7 +165,7 @@ RUN \
     && apt-mark manual \
             libevent-2.0-5 \
             libsasl2-2 \
-    && memcached -V
+    && $MEMCACHED_INSTALL_DIR/bin/memcached -V
 
 # 安装 Redis
 ENV REDIS_VERSION=3.2.8 \
