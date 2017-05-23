@@ -428,7 +428,7 @@ RUN \
     && rm -rf /tmp/${PHP_EXT_SEASLOG}*
 
 # 安装 PHP swoole 扩展
-ENV PHP_EXT_SWOOLE=swoole-1.9.8
+ENV PHP_EXT_SWOOLE=swoole-1.9.9
 RUN \
     cd /tmp \
     && rm -rf ${PHP_EXT_SWOOLE}* \
@@ -619,7 +619,7 @@ RUN \
     && rm -rf /tmp/${PHP_EXT_SEASLOG}*
 
 # 安装 PHP swoole 扩展
-ENV PHP_EXT_SWOOLE=swoole-1.9.8
+ENV PHP_EXT_SWOOLE=swoole-1.9.9
 RUN \
     cd /tmp \
     && rm -rf ${PHP_EXT_SWOOLE}* \
@@ -797,7 +797,7 @@ RUN \
     && rm -rf /tmp/${PHP_EXT_SEASLOG}*
 
 # 安装 PHP swoole 扩展
-ENV PHP_EXT_SWOOLE=swoole-1.9.8
+ENV PHP_EXT_SWOOLE=swoole-1.9.9
 RUN \
     cd /tmp \
     && rm -rf ${PHP_EXT_SWOOLE}* \
@@ -956,7 +956,7 @@ RUN \
     && rm -rf /tmp/${PHP_EXT_SEASLOG}*
 
 # 安装 PHP swoole 扩展
-ENV PHP_EXT_SWOOLE=swoole-1.9.8
+ENV PHP_EXT_SWOOLE=swoole-1.9.9
 RUN \
     cd /tmp \
     && rm -rf ${PHP_EXT_SWOOLE}* \
