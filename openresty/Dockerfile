@@ -3,14 +3,14 @@ FROM debian:jessie
 MAINTAINER DongNan <dongyh@126.com>
 
 # 替换apt源
-COPY 163.sources.list /etc/apt/sources.list
+#COPY 163.sources.list /etc/apt/sources.list
 
 # 安装openresty
-ENV RESTY_VERSION="1.11.2.2" \
+ENV RESTY_VERSION="1.11.2.3" \
     RESTY_LUAROCKS_VERSION="2.3.0" \
-    RESTY_OPENSSL_VERSION="1.0.2j" \
+    RESTY_OPENSSL_VERSION="1.0.2k" \
     RESTY_PCRE_VERSION="8.39" \
-    RESTY_J="1" \
+    RESTY_J="4" \
     RESTY_INSTALL_DIR=/opt/app/openresty \
     RESTY_NGINX_DIR=/opt/app/nginx \
     NGINX_CONF_DIR=/etc/nginx \
