@@ -3,7 +3,7 @@ FROM debian:jessie
 MAINTAINER DongNan <dongyh@126.com>
 
 # 替换apt源
-#COPY 163.sources.list /etc/apt/sources.list
+COPY 163.sources.list /etc/apt/sources.list
 
 # 安装openresty
 ENV RESTY_VERSION="1.11.2.3" \
@@ -84,12 +84,13 @@ RUN groupadd -r web && useradd -r -g web web
 # 3) Build OpenResty
 # 4) Cleanup
 RUN \
+    rm -rf /var/lib/apt/lists/* && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends $RESTY_DEPS \
     && cd /tmp \
     && curl -fSL https://www.openssl.org/source/openssl-${RESTY_OPENSSL_VERSION}.tar.gz -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
     && tar xzf openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
-    && curl -fSL https://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
+    && curl -fSL https://ftp.pcre.org/pub/pcre/pcre-${RESTY_PCRE_VERSION}.tar.gz -o pcre-${RESTY_PCRE_VERSION}.tar.gz \
     && tar xzf pcre-${RESTY_PCRE_VERSION}.tar.gz \
     && curl -fSL https://openresty.org/download/openresty-${RESTY_VERSION}.tar.gz -o openresty-${RESTY_VERSION}.tar.gz \
     && tar xzf openresty-${RESTY_VERSION}.tar.gz \
