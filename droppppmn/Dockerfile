@@ -2,6 +2,9 @@
 FROM dongnan/debian8-gosu:1.7
 MAINTAINER DongNan <dongyh@126.com>
 
+# 替换apt源
+COPY 163.sources.list /etc/apt/sources.list
+
 # 安装 mysql (percona-5.7)
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
